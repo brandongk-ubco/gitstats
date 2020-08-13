@@ -1,7 +1,5 @@
-from dataclasses import dataclass
 from github import Github
 
-@dataclass
 class GithubConnection:
     group_name: str
     access_token: str
