@@ -1,6 +1,6 @@
 # Sprint Planning
 
-The purpose of spring planning is to make sure that the team has accepted the correct items to work on, that those items are well-defined and small in scope, and that all tasks are expected to be completed before the sprint ends.
+The purpose of sprint planning is to make sure that the team has accepted the correct items to work on, that those items are well-defined and small in scope, and that all tasks are expected to be completed before the sprint ends.
 
 Based on the requirements for proper [estimation](./estimation.md), the sprint planning meeting should consist of the following steps:
 
@@ -16,11 +16,14 @@ Based on the requirements for proper [estimation](./estimation.md), the sprint p
 
 6. Identify any known tasks which are required to complete a feature.  These tasks will be technical, such as implementing code.  For each of these tasks, make sure to define acceptance criteria and validation techniques.  The task should include any required documentation, and meet code standards such as linting and regression testing.  The validation techniques should be specific enough that anyone on the team could execute them; preferably, the validation should be automated to facilitate regression testing in the future.
 
+7. Identify any [chores](./visibility.md) which the team should complete.  Since chores provide value for the team instead of the client, they should provide a positive return-on-investment for time spent.  If a chore is expected to save time over the course of the project, it should be worked on first.  If a chore is not expected to save time over the course of the project, it should not be worked on at all and should be closed.
+
 7. Accept tasks into the sprint such that they could reasonably be expected to be completed during the sprint.  Prefer exploration over implementation to reduce risk.  For example, if issues are expected to take 2-4 hours to complete, and a sprint is a week, each member should be assigned 2-3 issues at the end of sprint planning; these should include any outstanding tasks which were not completed in the previous sprint.
 
-At the end of spring planning you should have:
+At the end of sprint planning you should have:
 - assigned exploration issues to clarify acceptance criteria
 - a top-10 prioritized backlog of features, including acceptance criteria
-- exploration issues to clarify technical implementation
-- tasks to perform implementation, with defined acceptace criteria and validation techniques
+- exploration logged as issues to clarify technical implementation
+- chores logged as issues which are expected to save time over the course of the project
+- tasks logged as issues to perform implementation, with defined acceptace criteria and validation techniques
 - 2-3 assigned issues per team member.

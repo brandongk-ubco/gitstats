@@ -10,7 +10,7 @@ This repository documents how to use the [GitHub project management](https://git
 
 3) Setup the github repository and configure it to enforce proper [git flow](/docs/technical/git.md).  Some features require a pro github account, which can be obtained using [GitHub for Education](https://education.github.com/pack) and your school e-mail address.
 
-4) Configure the [GitHub issue labels](./docs/technical/visibility.md) needed.
+4) Configure the [GitHub issue labels](./docs/technical/visibility.md) and [milestones](./docs/technical/mildesontes.md) needed.
 
 5) Schedule your first client meeting.  When you meet your client for the first time, introduce yourselves as well as your roles in the project. While your objective is to learn who your client is and the project details, you will need to keep in mind that your client is most likely not familiar with how this course works or what is expected of you or of them. Explain to them there is a course schedule and there are intermediate reports that will be created as part of the project that you will go over with them upon completion.
 
@@ -20,4 +20,7 @@ This repository documents how to use the [GitHub project management](https://git
 
 # Weekly Expectations
 
-- Have a team meeting where you perform a [retrospective](https://youtu.be/MiaZhJyYUj0) and [sprint planning](./docs/technical/planning.md)
+- Have a team meeting where you perform a [retrospective](./docs/technical/retrospective.md) and [sprint planning](./docs/technical/planning.md).
+- Accept 2-3 team issues per team member into the sprint, and have those issues completed by the end of the sprint.
+- Assess team progress through a projection of feature completion, and identify any delays in milestone delivery early.
+- Have a client meeting to prioritize feature, identify acceptance criteria, and communicate team progress.
