@@ -16,7 +16,7 @@ The team will receive a mark for their progress, and each individual will have t
 
 Weekly individual contribution will be relative to the team.  The formula for calculating the contribution will be given as:
 
-<img src="https://latex.codecogs.com/png.latex?\Large&space;\text{effort}= 5 * \frac{\sum \hat{p}_i}{\sum p} + 5 * \frac{\sum \hat{c}_i}{\sum c} + 3 * \frac{\sum \hat{h}_i}{\sum h} + 2 * \frac{\sum \hat{o}_i}{\sum o}" style="background:white;padding:10px;"/>
+<img src="./contribution.png?raw=true" style="background:white;padding:10px;"/>
 
 Where:
  - p is the number of completed pull requests
@@ -33,7 +33,7 @@ The total effort is then normalized such that the highest score receives 100%.
 
 Team progress will be calculated as a fraction of expected progress.  It will be calculated as:
 
-<img src="https://latex.codecogs.com/png.latex?\Large&space;\text{progress}= min(\frac{\sum \hat{t} + \hat{e} + \hat{c}}{\sum \tilde{t} + \tilde{e} + \tilde{c}}, 1)" style="background:white;padding:10px;"/>
+<img src="./progress.png?raw=true" style="background:white;padding:10px;"/>
 
 Where
  - t is the number of tasks
@@ -48,7 +48,7 @@ Where
 
 The final weekly score will be assigned to each individual through a combination of team progress and individual effort.
 
- <img src="https://latex.codecogs.com/png.latex?\Large&space;\text{score}= \text{progress} * \text{effort}" style="background:white;padding:10px;"/>
+<img src="./score.png?raw=true" style="background:white;padding:10px;"/>
 
  Note that:
   - progress is in [0,1], and is the same for all team members.
