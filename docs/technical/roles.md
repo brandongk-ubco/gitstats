@@ -35,7 +35,7 @@ Your job is to make sure that the project is on track and that the process is be
 
 ## QA Lead
 
-Your job is to define quality standards which your project must meet.  Remember, [QA is not QC](https://www.diffen.com/difference/Quality_Assurance_vs_Quality_Control) - you are the champion for your projects standards of quality, and help everyone to meet them.
+Your job is to define quality standards which your project must meet.  Remember, quality assurance is not quality control (read: [QA is not QC](https://www.diffen.com/difference/Quality_Assurance_vs_Quality_Control)) - you are the champion for your projects standards of quality, and help everyone to meet them.
 
 Responsibilities: 
 - **Sprint Planning Oversight** You should make sure that acceptance criteria are specific enough to be actionable and that the validation techniques will prove that the software is functional.
