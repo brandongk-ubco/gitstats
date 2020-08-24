@@ -14,7 +14,7 @@ Your job is to manage all the communication with the client. That means you will
 
 ## Technical Lead / DevOps
 
-Your job is to make sure that the technical requirements are being met.  You are to setup the Git repository with the correct settings for pull requests, code reviews, etc. as well as CI for stuff like code linting, static analysis, etc.  You are also responsible for ensuring that defined tests are executed, including executing any manual tests or setting up CI to execute automated tests.
+Your job is to make sure that the technical requirements are being met.  You are to setup the Git repository with the correct settings for pull requests, code reviews, etc. as well as continuous integration (CI) for stuff like code linting, static analysis, etc.  You are also responsible for ensuring that defined tests are executed, including executing any manual tests or setting up CI to execute automated tests.
 
 ### Responsibilities
 
