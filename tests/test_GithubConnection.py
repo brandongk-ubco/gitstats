@@ -8,5 +8,5 @@ class TestGithubConnection:
         connection = GithubConnection("Test Group", os.environ.get("GITHUB_TOKEN"), "microsoft/vscode")
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=1)
-        assert connection.repository is not None
-        assert connection.repository.get_commits(sha=connection.branch.name, since=start, until=end).totalCount >= 0
+        assert connection.get_repository() is not None
+        assert connection.get_repository().get_commits(sha=connection.branch_name, since=start, until=end).totalCount >= 0
