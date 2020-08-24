@@ -11,4 +11,4 @@ class TestGithubConnection:
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=1)
         assert connection.get_repository() is not None
-        assert connection.get_repository().get_commits(sha=connection.branch_name, since=start, until=end).totalCount >= 0
+        assert connection.get_repository().get_commits(sha="master", since=start, until=end).totalCount >= 0
