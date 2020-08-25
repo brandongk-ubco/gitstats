@@ -11,16 +11,6 @@ The basics of gitflow are:
 - If an issue in master is detected, a hotfix branch is created from master
 - Once the hotfix is complete, it is merged to both develop and master
 
-## Pull Requests
-
-Merging to master / develop is always done via [pull requests](https://www.atlassian.com/git/tutorials/making-a-pull-request), which combine many commits / changes into a single, reviewable, atomic change.  The pull request should:
-- contain entire deliverable (feature or similar)
-- be reviewed by the team
-- pass all tests (regression and smoke)
-- leave the code in a working, deployable state once merged into develop or master.
-
-# Other Tips
-
 ## Setup a correct .gitignore.
 There's a whole [list](https://github.com/github/gitignore) of them to chose from.  When possible, prefer whitelisting over blacklisting.  That is, setup your .gitignore to:
 
