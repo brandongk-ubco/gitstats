@@ -1,4 +1,4 @@
-One of the key components of [Kanban](https://en.wikipedia.org/wiki/Kanban_(development)) is high visibility of the work being embarked upon.  This allows the team, management, or client to see quickly and easily the plan and progress.  In this project, we will achieve visibility through [GitHub Issues](https://guides.github.com/features/issues/) and [GitHub Projects](https://github.com/features/project-management).
+One of the key components of [Kanban](https://en.wikipedia.org/wiki/Kanban_(development)) is high visibility of the work being embarked upon.  This allows the team, management, or client to see quickly and easily the plan and progress.  In this project, we will achieve visibility through [GitHub Issues](https://guides.github.com/features/issues/).
 
 # Types of Issues
 
