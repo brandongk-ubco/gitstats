@@ -6,7 +6,7 @@ There are two common frameworks which are inspired by this manifesto: scrum and 
 
 ## Definition of Done
 
-Since agile is an iterative framework that encourages rapid changes in requirements, individual tasks are expected to be very small, and the team has a [definition of done](https://www.productplan.com/agile-definition-of-done/) which is expected to be met for all tasks.  In this case, tasks are expected to take 2-4 hours to complete, and the definition of done is as follows:
+Since agile is an iterative framework that encourages rapid changes in requirements, individual tasks are expected to be very small, and the team has a [definition of done](https://www.productplan.com/agile-definition-of-done/) which is expected to be met for all tasks.  In this case, tasks are expected to take 2-4 hours to complete, and must meet all of the following criteria, which make up the definition of done for this project:
 
 - The acceptance criteria are met and the validation techniques are satisfied
 - Code is peer reviewed
