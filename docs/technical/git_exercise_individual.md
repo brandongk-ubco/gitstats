@@ -11,7 +11,7 @@ What to do for this Individual Git Exercise:
     - Switch to the correct feature branch, merge master into the feature branch, and develop the feature.  Make sure the feature works by testing it.  Commit it to the feature branch.
     - Make sure to create or update README.md with instructions on what your feature is and how to use it.
     - Push the feature branch to the remote repository (origin).
-    - Create a pull request in GitHub from the remote repository to the master branch, and merge it.
+    - Create a pull request in GitHub from the feature branch to the master branch, and merge it.
     - Pull the master branch on your local machine and make sure it updates with the code from GitHub.
 
 **Be ready to show this next class - that means you need to have your work on the machine ready for demo at the beginning of class.**
