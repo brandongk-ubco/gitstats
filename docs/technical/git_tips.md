@@ -1,3 +1,16 @@
+# Git Flow
+
+There is a very common [git flow](https://nvie.com/posts/a-successful-git-branching-model/) and a [good tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) on it.
+
+The basics of gitflow are:
+- A develop branch is created from master
+- A release branch is created from develop
+- Feature branches are created from develop
+- When a feature is complete, it is merged into the develop branch
+- When the release branch is done, it is merged into develop and master
+- If an issue in master is detected, a hotfix branch is created from master
+- Once the hotfix is complete, it is merged to both develop and master
+
 # Setup a correct .gitignore.
 There's a whole [list](https://github.com/github/gitignore) of them to chose from.  When possible, prefer whitelisting over blacklisting.  That is, setup your .gitignore to:
 
@@ -36,16 +49,3 @@ The [reflog](https://www.atlassian.com/git/tutorials/rewriting-history/git-reflo
 # Git matches commits to contributors based on e-mail.
 
 You should [setup git](https://git-scm.com/book/en/v2/Getting-Started-First-Time-Git-Setup) with your correct name and e-mail address to make sure they link up.
-
-# Git Flow
-
-There is a very common [git flow](https://nvie.com/posts/a-successful-git-branching-model/) and a [good tutorial](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow) on it.
-
-The basics of gitflow are:
-- A develop branch is created from master
-- A release branch is created from develop
-- Feature branches are created from develop
-- When a feature is complete, it is merged into the develop branch
-- When the release branch is done, it is merged into develop and master
-- If an issue in master is detected, a hotfix branch is created from master
-- Once the hotfix is complete, it is merged to both develop and master
