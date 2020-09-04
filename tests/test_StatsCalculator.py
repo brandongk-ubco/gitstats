@@ -1,6 +1,7 @@
 from .fixtures import prs as prs_fixtures, comments as comments_fixtures, commits as commits_fixtures
 from .mocks import MockStatsCollector
 from gitstats import StatsCalculator
+import pandas as pd
 
 
 class TestStatsCalculator:

@@ -6,7 +6,21 @@ from datetime import datetime, timezone, timedelta
 
 class TestStatsCollector:
 
-    def test_collects(self):
+    def test_no_prs(self):
+        expected_prs = []
+        repository = MockRepository(expected_prs)
+        pullRequestRepository = PullRequestRepository(repository)
+        end = datetime.now(timezone.utc) + timedelta(days=7)
+        start = datetime.now(timezone.utc) - timedelta(days=7)
+
+        collector = StatsCollector(pullRequestRepository, start=start, end=end)
+
+        assert len(collector.getPRs()) == 0
+        assert len(collector.getReviews()) == 0
+        assert len(collector.getComments()) == 0
+        assert len(collector.getCommits()) == 0
+
+    def test_collects_prs(self):
         expected_commits = []
         expected_reviews = []
         expected_review_comments = []

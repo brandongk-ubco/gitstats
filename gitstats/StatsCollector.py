@@ -11,13 +11,22 @@ class StatsCollector:
 
     def _collect(self):
         self.prs = self.repository.findPRsByDateRange(self.start, self.end)
-        pr_ids = self.prs["id"].tolist()
+
+        if len(self.prs) > 0:
+            pr_ids = self.prs["id"].tolist()
+        else:
+            pr_ids = []
         self.reviews = aggregate_list(
-            [self.repository.getReviewsByPullRequestId(pr) for pr in pr_ids])
+            [self.repository.getReviewsByPullRequestId(pr) for pr in pr_ids],
+            columns=["pr", "id", "state", "date"])
         self.commits = aggregate_list(
-            [self.repository.getCommitsByPullRequestId(pr) for pr in pr_ids])
+            [self.repository.getCommitsByPullRequestId(pr) for pr in pr_ids],
+            columns=[
+                "pr", "user", "date", "additions", "deletions", "id", "changes"
+            ])
         self.comments = aggregate_list(
-            [self.repository.getCommentsByPullRequestId(pr) for pr in pr_ids])
+            [self.repository.getCommentsByPullRequestId(pr) for pr in pr_ids],
+            columns=["pr", "date", "user", "id", "type"])
 
     def getPRs(self):
         return self.prs.copy()
