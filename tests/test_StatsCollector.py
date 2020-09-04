@@ -34,10 +34,10 @@ class TestStatsCollector:
         start = datetime.now(timezone.utc) - timedelta(days=7)
 
         collector = StatsCollector(pullRequestRepository, start=start, end=end)
-        prs = collector.get_prs()
-        reviews = collector.get_reviews()
-        comments = collector.get_comments()
-        commits = collector.get_commits()
+        prs = collector.getPRs()
+        reviews = collector.getReviews()
+        comments = collector.getComments()
+        commits = collector.getCommits()
         assert len(prs) == len(expected_prs)
         assert len(reviews) == sum([len(e) for e in expected_reviews])
         assert len(comments) == sum([

@@ -19,14 +19,14 @@ class StatsCollector:
         self.comments = aggregate_list(
             [self.repository.getCommentsByPullRequestId(pr) for pr in pr_ids])
 
-    def get_prs(self):
-        return self.prs
+    def getPRs(self):
+        return self.prs.copy()
 
-    def get_reviews(self):
-        return self.reviews
+    def getReviews(self):
+        return self.reviews.copy()
 
-    def get_commits(self):
-        return self.commits
+    def getCommits(self):
+        return self.commits.copy()
 
-    def get_comments(self):
-        return self.comments
+    def getComments(self):
+        return self.comments.copy()
