@@ -139,6 +139,8 @@ class StatsCalculator:
         aggregated["comments"] = aggregated["comments"] / aggregated[
             "comments"].max() * 100
 
+        aggregated = aggregated.fillna(0.0)
+
         aggregated["effort"] = 5 * aggregated["contributed"] + 5 * aggregated[
             "commits"] + 3 * aggregated["changes"] + 2 * aggregated["comments"]
         aggregated["effort"] = aggregated["effort"] / aggregated["effort"].max(
