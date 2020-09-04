@@ -7,7 +7,7 @@ class PullRequestRepository:
     def __init__(self, repository):
         self.repository = repository
 
-    def findByDateRange(self, start, end):
+    def findPRsByDateRange(self, start, end):
         df = pd.DataFrame()
 
         prs = self.repository.get_pulls(state="closed",
