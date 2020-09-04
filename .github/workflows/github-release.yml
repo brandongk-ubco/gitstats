@@ -14,8 +14,9 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
       - name: Set env
-        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
-        run: echo ::set-env name=PYTHON_VERSION::${RELEASE_VERSION:1}
+        run: |
+          echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+          echo ::set-env name=PYTHON_VERSION::${RELEASE_VERSION:1}
       - name: Build project
         run: |
           python3 -m pip install --user --upgrade setuptools wheel
