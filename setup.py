@@ -1,11 +1,12 @@
 import setuptools
+import os
 
 with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
     name="gitstats",  # Replace with your own username
-    version="0.0.1",
+    version=os.environ.get("GITHUB_REF", "alpha"),
     author="Brandon Graham-Knight",
     author_email="brandongk@alumni.ubc.ca",
     description=
