@@ -11,34 +11,34 @@ class TestPullRequestRepository:
         finder = PullRequestRepository(repository)
         return finder
 
-    @pytest.mark.findByDateRange
+    @pytest.mark.findPRsByDateRange
     def test_no_prs(self):
         expected_prs = []
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        prs = finder.findByDateRange(start, end)
+        prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 0
 
-    @pytest.mark.findByDateRange
+    @pytest.mark.findPRsByDateRange
     def test_one_pr(self):
         expected_prs = [MockPR()]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        prs = finder.findByDateRange(start, end)
+        prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == len(expected_prs)
 
-    @pytest.mark.findByDateRange
+    @pytest.mark.findPRsByDateRange
     def test_two_prs(self):
         expected_prs = [MockPR(), MockPR()]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        prs = finder.findByDateRange(start, end)
+        prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 2
 
-    @pytest.mark.findByDateRange
+    @pytest.mark.findPRsByDateRange
     def test_starts_at_right_date(self):
         expected_prs = [
             MockPR(),
@@ -47,10 +47,10 @@ class TestPullRequestRepository:
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        prs = finder.findByDateRange(start, end)
+        prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 1
 
-    @pytest.mark.findByDateRange
+    @pytest.mark.findPRsByDateRange
     def test_skips_after_end_date(self):
         expected_prs = [
             MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1)),
@@ -59,7 +59,7 @@ class TestPullRequestRepository:
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now(timezone.utc)
         start = end - timedelta(days=7)
-        prs = finder.findByDateRange(start, end)
+        prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 1
 
     @pytest.mark.getById

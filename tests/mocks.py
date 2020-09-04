@@ -23,18 +23,19 @@ class MockRepository:
 class MockPR:
 
     def __init__(self,
-                 updated_at=datetime.now(timezone.utc),
+                 updated_at=None,
                  assignee=None,
                  merged=False,
-                 number=randint(1, 1e100),
+                 number=None,
                  reviews=[],
                  commits=[],
                  issue_comments=[],
                  review_comments=[]):
-        self.updated_at = updated_at
+        self.updated_at = updated_at if updated_at is not None else datetime.now(
+            timezone.utc)
         self.assignee = assignee
         self.merged = merged
-        self.number = number
+        self.number = number if number is not None else randint(1, 1e10)
         self.reviews = reviews
         self.commits = commits
         self.issue_comments = issue_comments
@@ -56,45 +57,42 @@ class MockPR:
 class MockReview:
 
     def __init__(self,
-                 id: int = randint(1, 1e100),
+                 id: int = None,
                  state: str = "submitted",
-                 submitted_at: datetime = datetime.now(timezone.utc)):
-        self.id = id,
-        self.state = state,
-        self.submitted_at = submitted_at
+                 submitted_at: datetime = None):
+        self.id = id if id is not None else randint(1, 1e10)
+        self.state = state
+        self.submitted_at = submitted_at if submitted_at is not None else datetime.now(
+            timezone.utc)
 
 
 class MockAuthor:
 
-    def __init__(self, name=uuid.uuid4().hex):
-        self.name = name
+    def __init__(self, name=None):
+        self.name = name if name is not None else uuid.uuid4().hex
 
 
 class MockStats:
 
-    def __init__(self,
-                 additions: int = randint(1, 1e100),
-                 deletions: int = randint(1, 1e100)):
-        self.additions = additions
-        self.deletions = deletions
+    def __init__(self, additions: int = None, deletions: int = None):
+        self.additions = additions if additions is not None else randint(
+            1, 1e10)
+        self.deletions = deletions if deletions is not None else randint(
+            1, 1e10)
         self.total = self.additions + self.deletions
 
 
 class MockCommit:
 
-    def __init__(self,
-                 author=MockAuthor(),
-                 date=datetime.now(timezone.utc),
-                 stats=MockStats(),
-                 sha=uuid.uuid4().hex):
-        self.author = author
-        self.stats = stats
-        self.sha = sha
-        self.date = date
+    def __init__(self, author=None, date=None, stats=None, sha=None):
+        self.author = author if author is not None else MockAuthor()
+        self.stats = stats if stats is not None else MockStats()
+        self.sha = sha if sha is not None else uuid.uuid4().hex
+        self.date = date if date is not None else datetime.now(timezone.utc)
         self.raw_data = {
             "commit": {
                 "author": {
-                    "date": date.strftime("%Y-%m-%dT%H:%M:%SZ")
+                    "date": self.date.strftime("%Y-%m-%dT%H:%M:%SZ")
                 }
             }
         }
@@ -102,10 +100,8 @@ class MockCommit:
 
 class MockComment:
 
-    def __init__(self,
-                 updated_at=datetime.now(timezone.utc),
-                 user=MockAuthor(),
-                 id=uuid.uuid4().hex):
-        self.updated_at = updated_at
-        self.user = user
-        self.id = id
+    def __init__(self, updated_at=None, user=None, id=None):
+        self.updated_at = updated_at if updated_at is not None else datetime.now(
+            timezone.utc)
+        self.user = user if user is not None else MockAuthor()
+        self.id = id if id is not None else uuid.uuid4().hex
