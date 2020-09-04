@@ -117,6 +117,10 @@ class StatsCalculator:
         aggregated["contributed"] = aggregated["contributions"] > 0
         aggregated = aggregated.drop('contributions', 1)
 
+        aggregated.drop(
+            aggregated[aggregated['user'].astype(bool) == False].index,
+            inplace=True)
+
         return aggregated
 
     def getEffortByUserFromContributions(self, contributions):

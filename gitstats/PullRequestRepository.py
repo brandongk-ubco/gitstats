@@ -8,8 +8,7 @@ class PullRequestRepository:
         self.repository = repository
 
     def findPRsByDateRange(self, start, end):
-        df = pd.DataFrame()
-
+        df = pd.DataFrame(columns=["id", "date", "assignee", "merged"])
         prs = self.repository.get_pulls(state="closed",
                                         sort="updated",
                                         direction="desc")
@@ -37,7 +36,7 @@ class PullRequestRepository:
     def getReviewsByPullRequestId(self, id):
         pr = self.getById(id)
 
-        df = pd.DataFrame()
+        df = pd.DataFrame(columns=["pr", "id", "state", "date"])
         reviews = pr.get_reviews()
         for review in reviews:
             df = df.append(
@@ -53,7 +52,9 @@ class PullRequestRepository:
     def getCommitsByPullRequestId(self, id):
         pr = self.getById(id)
 
-        df = pd.DataFrame()
+        df = pd.DataFrame(columns=[
+            "pr", "user", "date", "additions", "deletions", "id", "changes"
+        ])
 
         commits = pr.get_commits()
         for commit in commits:
@@ -78,7 +79,7 @@ class PullRequestRepository:
 
         pr = self.getById(id)
 
-        df = pd.DataFrame()
+        df = pd.DataFrame(columns=["pr", "date", "user", "id", "type"])
 
         comments = pr.get_review_comments()
         for comment in comments:
