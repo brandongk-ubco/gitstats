@@ -6,7 +6,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gitstats",  # Replace with your own username
-    version=os.environ.get("GITHUB_REF", "alpha"),
+    version=os.environ.get("RELEASE_VERSION", "alpha"),
     author="Brandon Graham-Knight",
     author_email="brandongk@alumni.ubc.ca",
     description=
