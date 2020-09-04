@@ -13,10 +13,10 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-      - name: Set env
-        run: |
-          echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
-          echo ::set-env name=PYTHON_VERSION::${RELEASE_VERSION:1}
+      - name: Set RELEASE_VERSION
+        run: echo ::set-env name=RELEASE_VERSION::${GITHUB_REF#refs/*/}
+      - name: set PYTHON_VERSION
+        run: echo ::set-env name=PYTHON_VERSION::${RELEASE_VERSION:1}
       - name: Build project
         run: |
           python3 -m pip install --user --upgrade setuptools wheel
@@ -39,7 +39,7 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./dist/gitstats-${{ env.PYTHON_VERSION }}-py3-none-any.whl
-          asset_name: gitstats-py3-none-any.whl
+          asset_name: gitstats-${{ env.PYTHON_VERSION }}-py3-none-any.whl
           asset_content_type: application/zip
       - name: Upload Source
         id: upload-source
@@ -49,5 +49,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps 
           asset_path: ./dist/gitstats-${{ env.PYTHON_VERSION }}.tar.gz
-          asset_name: gitstats.tar.gz
+          asset_name: gitstats-${{ env.PYTHON_VERSION }}.tar.gz
           asset_content_type: application/gzip
