@@ -1,0 +1,6 @@
+pytest
+pytest-cov
+seaborn
+PyGithub
+flake8
+yapf

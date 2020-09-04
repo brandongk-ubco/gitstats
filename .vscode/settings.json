@@ -1,0 +1,9 @@
+{
+    "python.pythonPath": "~/miniconda3/envs/gitstats/bin/python",
+    "python.linting.pylintEnabled": false,
+    "python.linting.flake8Enabled": true,
+    "python.linting.enabled": true,
+    "python.linting.lintOnSave": true,
+    "python.formatting.provider": "yapf",
+    "editor.formatOnSave": true
+}
