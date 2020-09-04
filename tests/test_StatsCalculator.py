@@ -132,3 +132,14 @@ class TestStatsCalculator:
         effort = calculator.getEffortByUserFromContributions(contributions)
         assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
         assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
+
+    def test_effort_with_only_comments(self):
+        collector = MockStatsCollector(prs=prs_fixtures,
+                                       comments=comments_fixtures)
+        calculator = StatsCalculator(collector)
+
+        contributions = calculator.getContributionsByUserAndPR()
+
+        effort = calculator.getEffortByUserFromContributions(contributions)
+        assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
+        assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
