@@ -1,6 +1,7 @@
 from datetime import datetime, timezone
 from random import randint
 import uuid
+import pandas as pd
 
 
 class MockRepository:
@@ -105,3 +106,31 @@ class MockComment:
             timezone.utc)
         self.user = user if user is not None else MockAuthor()
         self.id = id if id is not None else uuid.uuid4().hex
+
+
+class MockStatsCollector:
+
+    def __init__(self, prs=None, reviews=None, comments=None, commits=None):
+        self.prs = prs if prs is not None else pd.DataFrame(
+            columns=["id", "date", "assignee", "merged"])
+        self.reviews = reviews if reviews is not None else pd.DataFrame(
+            columns=["pr", "id", "state", "date"])
+        self.comments = comments if comments is not None else pd.DataFrame(
+            columns=["pr", "date", "user", "type", "id"])
+        self.commits = commits if commits is not None else pd.DataFrame(
+            columns=[
+                "pr", "user", "date", "date", "additions", "deletions", "id",
+                "changes"
+            ])
+
+    def getPRs(self):
+        return self.prs.copy()
+
+    def getReviews(self):
+        return self.reviews.copy()
+
+    def getCommits(self):
+        return self.commits.copy()
+
+    def getComments(self):
+        return self.comments.copy()
