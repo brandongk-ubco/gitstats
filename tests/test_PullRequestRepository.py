@@ -1,57 +1,7 @@
 from gitstats.PullRequestRepository import PullRequestRepository
 from datetime import datetime, timezone, timedelta
-from random import randint
 import pytest
-
-
-class MockRepository:
-
-    def __init__(self, prs=[]):
-        self.prs = prs
-
-    def get_pulls(self, *args, **kwargs):
-        return self.prs
-
-    def get_pull(self, id: int):
-        pr = [p for p in self.prs if p.number == id]
-        if len(pr) == 0:
-            raise ValueError("PR does not exist")
-        if len(pr) > 1:
-            raise ValueError("Multiple PRs exist")
-        return pr[0]
-
-
-class MockPR:
-
-    def __init__(self,
-                 updated_at=datetime.now(timezone.utc),
-                 assignee=None,
-                 merged=False,
-                 number=randint(1, 1e100),
-                 reviews=[],
-                 commits=[],
-                 issue_comments=[],
-                 review_comments=[]):
-        self.updated_at = updated_at
-        self.assignee = assignee
-        self.merged = merged
-        self.number = number
-        self.reviews = reviews
-        self.commits = commits
-        self.issue_comments = issue_comments
-        self.review_comments = review_comments
-
-    def get_reviews(self):
-        return self.reviews
-
-    def get_commits(self):
-        return self.commits
-
-    def get_review_comments(self):
-        return self.review_comments
-
-    def get_issue_comments(self):
-        return self.issue_comments
+from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
 
 
 class TestPullRequestRepository:
@@ -118,3 +68,33 @@ class TestPullRequestRepository:
         finder = self._mock_pr_response(expected_prs)
         pr = finder.getById(expected_prs[0].number)
         assert pr == expected_prs[0]
+
+    @pytest.mark.getReviewsByPullRequestId
+    def test_returns_reviews(self):
+        expected_reviews = [MockReview(), MockReview()]
+        pr = MockPR(reviews=expected_reviews)
+        finder = self._mock_pr_response([pr])
+        reviews = finder.getReviewsByPullRequestId(pr.number)
+        assert len(reviews) == len(expected_reviews)
+
+    @pytest.mark.getCommitsByPullRequestId
+    def test_returns_commits(self):
+        expected_commits = [MockCommit(), MockCommit()]
+        pr = MockPR(commits=expected_commits)
+        finder = self._mock_pr_response([pr])
+        commits = finder.getCommitsByPullRequestId(pr.number)
+        assert len(commits) == len(expected_commits)
+        for i in range(0, len(commits)):
+            assert abs(commits["date"][i].timestamp() -
+                       expected_commits[i].date.timestamp()) < 1
+
+    @pytest.mark.getCommentsByPullRequestId
+    def test_returns_comments(self):
+        expected_review_comments = [MockComment(), MockComment()]
+        expected_issue_comments = [MockComment(), MockComment()]
+        pr = MockPR(issue_comments=expected_issue_comments,
+                    review_comments=expected_review_comments)
+        finder = self._mock_pr_response([pr])
+        comments = finder.getCommentsByPullRequestId(pr.number)
+        assert len(comments) == len(expected_review_comments) + len(
+            expected_issue_comments)
