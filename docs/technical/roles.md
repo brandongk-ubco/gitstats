@@ -14,7 +14,7 @@ These responsibilities are for all members of the team.  Each person is expected
  - code standards are met
  - the project works as expected
 
-## Client Liason / Product Owner
+## Client Liaison / Product Owner
 
 Your job is to manage all the communication with the client. That means you will keep track of what the client wants, what the client said, hunt down the client if s/he is not responding to your team, document minutes from client meetings, ensure your team is doing what the client wants.  In scrum meetings, you should be the voice of the client and advocate for the issues / success criteria which you believe the client would want.  If you are unsure / unclear, you should communicate with the client until you become sure.
 
