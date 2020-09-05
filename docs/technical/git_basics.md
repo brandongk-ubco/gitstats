@@ -6,7 +6,7 @@ There are two branches which every project should have: *develop* and *master*. 
 
 Since these branches are common, they should be **protected** - this ensures that code can only enter these branches by pull request, and that the history of these branches cannot be changed through squashing or rebasing.  This can be enforced in your repository settings.
 
-**TODO: Video on setting up the repository**
+[![Starting a new Repository](./1.jpg)](https://drive.google.com/file/d/1QKIMBj8Aewsvp3eHtc3ZxB2BZFQZwoao/view?usp=sharing "Starting a new Repository")
 
 ## Pull Requests
 
