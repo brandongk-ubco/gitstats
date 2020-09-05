@@ -16,6 +16,8 @@ Merging to master / develop is always done via [pull requests](https://www.atlas
 - pass all tests (regression and smoke)
 - leave the code in a working, deployable state once merged into develop or master.
 
+[**Video: Reviewing and Merging PRs** <br /> ![Reviewing and Merging PRs](./2.jpg) ](https://drive.google.com/file/d/19ooq9qdHZdhOkbxsyYkt1VCXsEQpdRQO/view?usp=sharing "Reviewing and Merging PRs")
+
 ## Other Branches
 
 Other branches can be created as needed to complete [issues](./issues.md).  In general, a branch should be created for each feature, which allows full completion of the feature before it is added to develop.  Branches can also be setup for other reasons, such as hotfixes or releases.  Your team can decide how to implement this, but one common process is to follow [git flow](./git_tips.md)
