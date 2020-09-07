@@ -6,13 +6,15 @@ There are many roles in a software project.  This document defines four [common 
 
 These responsibilities are for all members of the team.  Each person is expected to:
 
-- All code should be merged into Dev by Reviewed [Pull Request](./git_basics.md) only.  All Pull Requests should reference the issue(s) which it resolves.  A PR can resolve more than one issue, but no issue should take multiple PRs to complete.
-- **PR Review** at least one team member who did not work on the issue should review the PR for the following
- - the acceptance criteria are met
- - automated tests are written for the feature
- - automated regression tests are passing
- - code standards are met
- - the project works as expected
+- Contribute to the [sprint planning](./planning.md) and [retrospective](./retrospective.md) meetings.
+
+- Resolve [issues](./issues.md) by writing code and documentation.  All contributions should be merged into Dev by Reviewed [Pull Request](./git_basics.md) only.  All Pull Requests should reference the issue(s) which it resolves.  A PR can resolve more than one issue, but no issue should take multiple PRs to complete.
+- At least one team member who did not work on the Pull Request should review it for the following
+    - the acceptance criteria are met
+    - automated tests are written for the feature
+    - automated regression tests are passing
+    - code standards are met
+    - the project works as expected
 
 ## Client Liaison / Product Owner
 
@@ -30,7 +32,6 @@ Your job is to make sure that the technical requirements are being met.  You are
 
 ### Responsibilities
 
-- **GitHub** All projects will use github. Make sure you each have a github account and your machines are setup to do basic repo pushes, pulls, merges, etc.
 - **Git Repository** [Setup the github repository](./git_basics.md).  Some features require a pro github account, which can be obtained using [GitHub for Education](https://education.github.com/pack) and your school e-mail address.  The repository should be configured so that *master* and *develop* branches are only changed through reviewed [pull request](./git_basics.md).  Read the [git tips](./git_tips.md) for some advice on other common Git issues.
 - **Development standards** The team will need to decide the coding standards to follow (e.g. spacing/indentation, naming conventions, etc.). These should be enforced in Continuous Integration (CI) through GitHub Actions.
 - **Testing** Automated unit testing is required for your project; you are to implement execution of these tests Continuous Integration (CI) through GitHub Actions.

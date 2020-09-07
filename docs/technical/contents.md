@@ -15,6 +15,7 @@
 - Project Management
     - [Issue Management](./issues.md)
     - [Task Estimation](./estimation.md)
+    - [Project Dashboard](./dashboard.md)
 - Writing Code
     - [Testing your Software](./testing.md)
 - [Evaluation](./evaluation.md)
