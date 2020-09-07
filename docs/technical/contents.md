@@ -6,7 +6,7 @@
     - [Agile Description](./agile.md)
     - [Agile Manifesto](./agile_manifesto.md)
     - [Sprint Planning](./planning.md)
-    - [Sprint Retrospective](./restrospective.md)
+    - [Sprint Retrospective](./retrospective.md)
 - Git and GitHub
     - [Basics](./git_basics.md)
     - [Tips](./git_tips.md)
