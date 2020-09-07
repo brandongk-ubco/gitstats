@@ -2,6 +2,8 @@
 
 This repository documents how to use the [GitHub project management](https://github.com/features/project-management) features to support an agile methodology.  It also provides code which uses [PyGithub](https://pygithub.readthedocs.io/en/latest/introduction.html) to query the [API](https://docs.github.com/en/rest) to track project progess and contributions for team members.
 
+For a full list of what's included, see the [Table of Contents](./docs/technical/contents.md)
+
 # Getting Stared
 
 1) Make sure you understand [agile](./docs/technical/agile.md) and read the [manifesto](./docs/technical/agile_manifesto.md).  Also, read and understand the overview of the [software development lifecycle](./docs/technical/lifecycle.md).
