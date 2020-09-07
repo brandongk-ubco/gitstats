@@ -8,7 +8,7 @@ The team will receive a mark for their progress, and each individual will have t
     - number of commits on completed pull requests
     - number of changes on completed pull requests
 - Weekly team progress through the completion of [issues](./issues.md)
-- Overall team progress through feature delivery at pre-defined milestones.
+- Overall team progress through feature delivery at pre-defined [milestones](./project_management.md).
 
 # Weekly Score
 

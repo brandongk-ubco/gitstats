@@ -1,5 +1,6 @@
+# Agile Manifesto
 
-# [Values](https://agilemanifesto.org/)
+## [Values](https://agilemanifesto.org/)
 
 - Individuals and interactions over processes and tools
 
@@ -9,7 +10,7 @@
 
 - Responding to change over following a plan
 
-# [Principles](https://agilemanifesto.org/principles.html)
+## [Principles](https://agilemanifesto.org/principles.html)
 
 - Our highest priority is to satisfy the customer through early and continuous delivery of valuable software.
 
