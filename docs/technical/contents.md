@@ -15,6 +15,8 @@
 - Project Management
     - [Issue Management](./issues.md)
     - [Task Estimation](./estimation.md)
+- Writing Code
+    - [Testing your Software](./testing.md)
 - [Evaluation](./evaluation.md)
 - Videos
     - [Starting a New Repository](https://drive.google.com/file/d/1QKIMBj8Aewsvp3eHtc3ZxB2BZFQZwoao/view?usp=sharing "Starting a new Repository")
