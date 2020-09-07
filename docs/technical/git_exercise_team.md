@@ -1,3 +1,5 @@
+# Team Git Exercise
+
 This exercise is very similar to the [individual git exercise](./git_exercise_individual.md).  Make sure each team member has completed that exercise before attempting this team exercise.
 
 What to do for this Individual Git Exercise:
@@ -11,7 +13,7 @@ What to do for this Individual Git Exercise:
     - Switch to the master branch and pull master from the remote repository (origin).
     - Create a branch locally for the feature they are developing.
     - Switch to the correct feature branch, merge master into the feature branch (if required).
-    - Push the new branch to GitHub and observe they exist in the branch list.
+    - Push the new branch to GitHub and observe it exists in the branch list.
     - Develop the feature.  Make sure the feature works by testing it.  Commit it to the feature branch.
     - Make sure to create or update README.md with instructions on what your feature is and how to use it.
     - Push the feature branch to the remote repository (origin).

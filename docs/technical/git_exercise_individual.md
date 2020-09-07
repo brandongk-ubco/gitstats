@@ -1,3 +1,5 @@
+# Individual Git Exercise
+
 What to do for this Individual Git Exercise:
 
 - Come up with a small programming project for yourself (write a sortable array in Java or something simple).

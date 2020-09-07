@@ -24,7 +24,7 @@ There's a whole [list](https://github.com/github/gitignore) of them to chose fro
 Note that when doing this, you must first disignore any directories, then any files in the directory.  If you don't disignore the directory, the parser won't even enter it to look for files.
 
 # Setup protected branches
-[Protected branches](https://help.github.com/en/articles/about-protected-branches) should be used at minimum for common branches (Dev / Master).  This stops amending / force pushing to common code branches and breaking things, or deleting Master (which I've actually seen done once in a production app).
+[Protected branches](https://help.github.com/en/articles/about-protected-branches) should be used at minimum for [integration branches](./git_basics.md).  This stops amending / force pushing to common code branches and breaking things, or deleting Master (which I've actually seen done once in a production app).
 
 # Merge develop back into feature branches BEFORE merging the feature branch into develop. 
 

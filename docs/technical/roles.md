@@ -14,7 +14,7 @@ These responsibilities are for all members of the team.  Each person is expected
  - code standards are met
  - the project works as expected
 
-## Client Liason / Product Owner
+## Client Liaison / Product Owner
 
 Your job is to manage all the communication with the client. That means you will keep track of what the client wants, what the client said, hunt down the client if s/he is not responding to your team, document minutes from client meetings, ensure your team is doing what the client wants.  In scrum meetings, you should be the voice of the client and advocate for the issues / success criteria which you believe the client would want.  If you are unsure / unclear, you should communicate with the client until you become sure.
 
@@ -36,6 +36,12 @@ Your job is to make sure that the technical requirements are being met.  You are
 - **Testing** Automated unit testing is required for your project; you are to implement execution of these tests Continuous Integration (CI) through GitHub Actions.
 - **Deployable Artifact**  Master should be packaged as a deployable artifact; this ensures that all teammates can view progress and demos can be performed.
 - **Integration Help** You are to help others resolve any integration issues that arise, and help with merging PRs if required.
+
+[**Video: Deployable Artifacts** <br /> ![Video: Deployable Artifacts](./5.jpg) ](https://drive.google.com/file/d/1JdmV03vOxWLYWSVmAgdGr2e1YN7ff-5e/view?usp=sharing "Video: Deployable Artifacts")
+
+[**Video: Implementing Continuous Integration** <br /> ![Video: Implementing Continuous Integration](./7.jpg) ](https://drive.google.com/file/d/1hlTaBNjvvH14oY4eSOJkMBSWrICa70si/view?usp=sharing "Video: Implementing Continuous Integration")
+
+[**Video: Using Tests to Inform Decisions** <br /> ![Video: Using Tests to Inform Decisions](./8.jpg) ](https://drive.google.com/file/d/1C96T5vUWZaAG6RtsR0b7yvmoTf-Sd-TF/view?usp=sharing "Video: Using Tests to Inform Decisions")
 
 ## Project / Scrum Manager
 
