@@ -1,6 +1,8 @@
+# Git Basics
+
 ## Integration Branches
 
-A [branch](https://www.educba.com/what-is-git-branch/) is a version of the codebase which is independent of other branches.  Branches start from an existing commit and can be combined with other branches through merging.  Branches are very useful, as they allow multiple developers to work on code at the same time, without having changes from the other causing conflicts with their work in progress.
+A [branch](https://www.educba.com/what-is-git-branch/) is a version of the codebase, and is independent of other branches.  Branches start from an existing commit and can be combined with other branches through merging.  Branches are very useful, as they allow multiple developers to work on code at the same time, without having changes from the other causing conflicts with their work in progress.
 
 There are two branches which every project should have: *develop* and *master*.  *develop* is an integration branch; as code is completed, it is merged into this branch, regression tests are run, and any issues integrating code should be corrected.  *master* is the deployment branch; when the code is ready to be released, *develop* is merged into master.  An important thing to note is that *develop* is **not** for working on individual features / issues; the code in this branch should be considered stable and complete, and changes added to this branch only when this condition is met.
 
