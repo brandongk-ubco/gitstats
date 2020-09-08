@@ -14,7 +14,7 @@ setuptools.setup(
     long_description=long_description,
     long_description_content_type="text/markdown",
     url="https://github.com/brandongk-ubco/gitstats",
-    packages=setuptools.find_packages(),
+    packages=['gitstats'],
     install_requires=['PyGithub', 'Jinja2', 'pandas'],
     classifiers=[
         "Programming Language :: Python :: 3",
@@ -22,4 +22,4 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     python_requires='>=3.6',
-)
+    include_package_data=True)
