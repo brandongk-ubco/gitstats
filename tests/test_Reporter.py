@@ -10,5 +10,5 @@ class TestReporter:
         reporter = Reporter("test", template, calculator)
         assert reporter.report() == "{}{}".format(
             "group_nametest-startstart-endend-contributionscontributions",
-            "-efforteffort-issues['issues']-excluded_issues['excluded_issues']-team_scoreteamscore"
+            "-efforteffort-issues['issues']-excluded_issues['excluded_issues']-team_scoreteamscore-final_scoresfinalscores"
         )

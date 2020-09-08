@@ -67,7 +67,7 @@ class StatsCalculator:
             self.statsCollecter.getCommits()["user"],
             self.statsCollecter.getIssues()["assignee"],
         ]).unique()
-        return users
+        return [u for u in users if u]
 
     def getPRs(self):
         return self.statsCollecter.getPRs()["id"].unique()
@@ -186,3 +186,9 @@ class StatsCalculator:
     def getTeamScore(self, users, issues):
         expected_issues = 2 * len(users)
         return len(issues) / expected_issues
+
+    def getFinalScores(self, effort, team_score):
+        scores = pd.DataFrame()
+        scores['user'] = effort['user']
+        scores["score"] = effort["effort"] * team_score / 100.0
+        return scores

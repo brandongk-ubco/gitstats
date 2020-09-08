@@ -11,6 +11,7 @@ class Reporter:
         effort = self.calculator.getEffortByUserFromContributions(contributions)
         issues, excluded_issues = self.calculator.getIssues()
         team_score = self.calculator.getTeamScore(users, issues)
+        final_scores = self.calculator.getFinalScores(effort, team_score)
         return self.template.render(group_name=self.group_name,
                                     start=self.calculator.get_start(),
                                     end=self.calculator.get_end(),
@@ -18,4 +19,5 @@ class Reporter:
                                     effort=effort,
                                     issues=issues,
                                     excluded_issues=excluded_issues,
-                                    team_score=team_score)
+                                    team_score=team_score,
+                                    final_scores=final_scores)

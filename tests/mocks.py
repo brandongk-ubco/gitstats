@@ -29,6 +29,7 @@ class MockPR:
 
     def __init__(self,
                  updated_at=None,
+                 closed_at=None,
                  assignee=None,
                  merged=False,
                  number=None,
@@ -37,6 +38,8 @@ class MockPR:
                  issue_comments=[],
                  review_comments=[]):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
+            timezone.utc)
+        self.closed_at = closed_at if closed_at is not None else datetime.now(
             timezone.utc)
         self.assignee = assignee
         self.merged = merged
@@ -184,6 +187,9 @@ class MockStatsCalculator:
     def getUsers(self):
         return ["Bob J.", "Joan B."]
 
+    def getFinalScores(self, effort, team_score):
+        return "finalscores"
+
 
 class MockTemplate:
 
@@ -195,11 +201,14 @@ class MockIssue:
 
     def __init__(self,
                  closed_at=None,
+                 updated_at=None,
                  assignee=None,
                  state="closed",
                  number=None,
                  labels=[]):
         self.closed_at = closed_at if closed_at is not None else datetime.now(
+            timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.now(
             timezone.utc)
         self.assignee = assignee
         self.number = number if number is not None else randint(1, 1e10)
