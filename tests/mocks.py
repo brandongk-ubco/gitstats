@@ -2,6 +2,7 @@ from datetime import datetime, timezone
 from random import randint
 import uuid
 import pandas as pd
+from github.GithubException import UnknownObjectException
 
 
 class MockRepository:
@@ -19,7 +20,7 @@ class MockRepository:
     def get_pull(self, id: int):
         pr = [p for p in self.prs if p.number == id]
         if len(pr) == 0:
-            raise ValueError("PR does not exist")
+            raise UnknownObjectException(status=404, data="PR does not exist")
         if len(pr) > 1:
             raise ValueError("Multiple PRs exist")
         return pr[0]

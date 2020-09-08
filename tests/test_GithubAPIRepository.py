@@ -58,7 +58,8 @@ class TestGithubAPIRepository:
     @pytest.mark.findPRsByDateRange
     def test_prs_skip_after_end_date(self):
         expected_prs = [
-            MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1)),
+            MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1),
+                   closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
             MockPR()
         ]
         finder = self._mock_pr_response(expected_prs)
@@ -135,7 +136,9 @@ class TestGithubAPIRepository:
     def test_issues_start_at_right_date(self):
         expected_issues = [
             MockIssue(),
-            MockIssue(closed_at=datetime.now(timezone.utc) - timedelta(days=10))
+            MockIssue(closed_at=datetime.now(timezone.utc) - timedelta(days=10),
+                      updated_at=datetime.now(timezone.utc) -
+                      timedelta(days=10))
         ]
         finder = self._mock_issue_response(expected_issues)
         end = datetime.now(timezone.utc)
