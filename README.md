@@ -10,7 +10,7 @@ It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will nee
 
 1. Create a [personal access token](https://github.com/settings/tokens) in GitHub.  Note that these personal access tokens are applied on the user, not the repository.  If your repository is public, you do not need to provide it any scope; if your repository is private, you need to provide the `repo` scope.
 
-1. Login to [syzygy](https://ubc.syzygy.ca) sing your CWL
+1. Login to [syzygy](https://ubc.syzygy.ca) using your CWL
 
 1. Look at the [example](./docs/examples/gitstats.ipynb) that exists in this repo.  You will need to change the access token variable to the access token you created above, as well as the group name and repository.  The repository is the GitHub path, including user name and repository name.
 
