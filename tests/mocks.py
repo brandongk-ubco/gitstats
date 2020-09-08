@@ -6,11 +6,15 @@ import pandas as pd
 
 class MockRepository:
 
-    def __init__(self, prs=[]):
+    def __init__(self, prs=[], issues=[]):
         self.prs = prs
+        self.issues = issues
 
     def get_pulls(self, *args, **kwargs):
         return self.prs
+
+    def get_issues(self, *args, **kwargs):
+        return self.issues
 
     def get_pull(self, id: int):
         pr = [p for p in self.prs if p.number == id]
@@ -161,3 +165,19 @@ class MockTemplate:
 
     def render(self, *args, **kwargs):
         return "-".join([k + v for k, v in kwargs.items()])
+
+
+class MockIssue:
+
+    def __init__(self,
+                 closed_at=None,
+                 assignee=None,
+                 state="closed",
+                 id=None,
+                 labels=[]):
+        self.closed_at = closed_at if closed_at is not None else datetime.now(
+            timezone.utc)
+        self.assignee = assignee
+        self.id = id if id is not None else randint(1, 1e10)
+        self.labels = labels
+        self.state = state

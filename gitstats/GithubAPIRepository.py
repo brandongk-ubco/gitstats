@@ -107,5 +107,28 @@ class GithubAPIRepository:
 
         return df
 
-    def getIssues(self):
-        pass
+    def findIssuesByDateRange(self, start, end):
+        df = pd.DataFrame(columns=["id", "date", "assignee", "labels"])
+        issues = self.repository.get_issues(state="closed",
+                                            sort="closed",
+                                            direction="desc")
+
+        for issue in issues:
+            if issue.closed_at > end:
+                continue
+            if issue.closed_at < start:
+                break
+
+            df = df.append(
+                {
+                    "id":
+                        issue.id,
+                    "date":
+                        issue.closed_at,
+                    "assignee":
+                        "" if issue.assignee is None else issue.assignee.name,
+                    "labels": [str(i) for i in issue.labels]
+                },
+                ignore_index=True)
+
+        return df

@@ -42,6 +42,9 @@ class StatsCollector:
             [self.repository.getCommentsByPullRequestId(pr) for pr in pr_ids],
             columns=["pr", "date", "user", "id", "type"])
 
+        self.issues = self.repository.findIssuesByDateRange(
+            self.start, self.end)
+
     def get_start(self):
         return self.start
 
@@ -50,6 +53,9 @@ class StatsCollector:
 
     def getPRs(self):
         return self.prs.copy()
+
+    def getIssues(self):
+        return self.issues.copy()
 
     def getReviews(self):
         return self.reviews.copy()
