@@ -58,3 +58,11 @@ class TestStatsCollector:
             len(e) for e in expected_issue_comments
         ]) + sum([len(e) for e in expected_review_comments])
         assert len(commits) == sum([len(e) for e in expected_commits])
+
+    def test_default_end(self):
+        default_end = StatsCollector.default_end()
+        now = datetime.utcnow()
+        assert default_end < now
+        assert default_end.weekday() == 4
+        assert (now - default_end).days < 7
+        assert default_end.time().isoformat() == "00:00:00"

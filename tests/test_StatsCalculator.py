@@ -143,3 +143,13 @@ class TestStatsCalculator:
         effort = calculator.getEffortByUserFromContributions(contributions)
         assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
         assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
+
+    def test_get_start(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        assert calculator.get_start() == collector.get_start()
+
+    def test_get_end(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        assert calculator.get_end() == collector.get_end()

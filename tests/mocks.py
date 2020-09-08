@@ -135,6 +135,12 @@ class MockStatsCollector:
     def getComments(self):
         return self.comments.copy()
 
+    def get_start(self):
+        return "start"
+
+    def get_end(self):
+        return "end"
+
 
 class MockStatsCalculator:
 
