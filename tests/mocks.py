@@ -134,3 +134,24 @@ class MockStatsCollector:
 
     def getComments(self):
         return self.comments.copy()
+
+
+class MockStatsCalculator:
+
+    def getContributionsByUserAndPR(self):
+        return "contributions"
+
+    def getEffortByUserFromContributions(self, contribuntions):
+        return "effort"
+
+    def get_start(self):
+        return "start"
+
+    def get_end(self):
+        return "end"
+
+
+class MockTemplate:
+
+    def render(self, *args, **kwargs):
+        return "-".join([k + v for k, v in kwargs.items()])

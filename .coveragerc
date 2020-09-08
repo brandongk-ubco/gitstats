@@ -2,3 +2,5 @@
 omit =
     tests/*
     gitstats/GithubConnection.py
+    gitstats/__init__.py
+    gitstats/Templater.py
