@@ -1,14 +1,14 @@
-from gitstats.PullRequestRepository import PullRequestRepository
+from gitstats.GithubAPIRepository import GithubAPIRepository
 from datetime import datetime, timezone, timedelta
 import pytest
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
 
 
-class TestPullRequestRepository:
+class TestGithubAPIRepository:
 
     def _mock_pr_response(self, expected_prs=[]):
         repository = MockRepository(expected_prs)
-        finder = PullRequestRepository(repository)
+        finder = GithubAPIRepository(repository)
         return finder
 
     @pytest.mark.findPRsByDateRange

@@ -2,7 +2,7 @@ import pandas as pd
 from datetime import datetime
 
 
-class PullRequestRepository:
+class GithubAPIRepository:
 
     def __init__(self, repository):
         self.repository = repository
@@ -106,3 +106,6 @@ class PullRequestRepository:
                 ignore_index=True)
 
         return df
+
+    def getIssues(self):
+        pass
