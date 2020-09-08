@@ -108,7 +108,7 @@ class GithubAPIRepository:
         return df
 
     def findIssuesByDateRange(self, start, end):
-        df = pd.DataFrame(columns=["id", "date", "assignee", "labels"])
+        df = pd.DataFrame(columns=["number", "date", "assignee", "labels"])
         issues = self.repository.get_issues(state="closed",
                                             sort="closed",
                                             direction="desc")
@@ -121,13 +121,13 @@ class GithubAPIRepository:
 
             df = df.append(
                 {
-                    "id":
-                        issue.id,
+                    "number":
+                        issue.number,
                     "date":
                         issue.closed_at,
                     "assignee":
                         "" if issue.assignee is None else issue.assignee.name,
-                    "labels": [str(i) for i in issue.labels]
+                    "labels": [str(i).lower().strip() for i in issue.labels]
                 },
                 ignore_index=True)
 

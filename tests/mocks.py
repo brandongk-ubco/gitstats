@@ -114,7 +114,13 @@ class MockComment:
 
 class MockStatsCollector:
 
-    def __init__(self, prs=None, reviews=None, comments=None, commits=None):
+    def __init__(self,
+                 prs=None,
+                 reviews=None,
+                 comments=None,
+                 commits=None,
+                 issues=None,
+                 users=None):
         self.prs = prs if prs is not None else pd.DataFrame(
             columns=["id", "date", "assignee", "merged"])
         self.reviews = reviews if reviews is not None else pd.DataFrame(
@@ -126,6 +132,9 @@ class MockStatsCollector:
                 "pr", "user", "date", "date", "additions", "deletions", "id",
                 "changes"
             ])
+        self.issues = issues if issues is not None else pd.DataFrame(
+            columns=["number", "date", "assignee", "labels"])
+        self.users = users if users is not None else ["Bob", "Joan"]
 
     def getPRs(self):
         return self.prs.copy()
@@ -145,6 +154,12 @@ class MockStatsCollector:
     def get_end(self):
         return "end"
 
+    def getIssues(self):
+        return self.issues.copy()
+
+    def get_users(self):
+        return self.users
+
 
 class MockStatsCalculator:
 
@@ -160,11 +175,20 @@ class MockStatsCalculator:
     def get_end(self):
         return "end"
 
+    def getIssues(self):
+        return ["issues"], ["excluded_issues"]
+
+    def getTeamScore(self, issues, excluded_issues):
+        return "teamscore"
+
+    def getUsers(self):
+        return ["Bob J.", "Joan B."]
+
 
 class MockTemplate:
 
     def render(self, *args, **kwargs):
-        return "-".join([k + v for k, v in kwargs.items()])
+        return "-".join([k + str(v) for k, v in kwargs.items()])
 
 
 class MockIssue:
@@ -173,11 +197,11 @@ class MockIssue:
                  closed_at=None,
                  assignee=None,
                  state="closed",
-                 id=None,
+                 number=None,
                  labels=[]):
         self.closed_at = closed_at if closed_at is not None else datetime.now(
             timezone.utc)
         self.assignee = assignee
-        self.id = id if id is not None else randint(1, 1e10)
+        self.number = number if number is not None else randint(1, 1e10)
         self.labels = labels
         self.state = state

@@ -16,4 +16,4 @@ def report(access_token, group_name, repository, start=None, end=None):
 
     reporter = Reporter(group_name, templater.get_template(), calculator)
 
-    print(reporter.report())
+    return reporter.report()

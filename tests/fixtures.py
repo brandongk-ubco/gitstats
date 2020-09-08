@@ -35,3 +35,30 @@ commits = pd.DataFrame.from_records([{
     "changes": 200,
     "id": 0
 }])
+
+issues = pd.DataFrame.from_records([{
+    "number": 0,
+    "date": datetime.now(timezone.utc),
+    "assignee": "Bob",
+    "labels": []
+}, {
+    "number": 1,
+    "date": datetime.now(timezone.utc),
+    "assignee": "Joan",
+    "labels": ["feature"]
+}, {
+    "number": 2,
+    "date": datetime.now(timezone.utc),
+    "assignee": "Bob",
+    "labels": ["chore", "task"]
+}, {
+    "number": 3,
+    "date": datetime.now(timezone.utc),
+    "assignee": "Bob",
+    "labels": ["task"]
+}, {
+    "number": 4,
+    "date": datetime.now(timezone.utc),
+    "assignee": "Bob",
+    "labels": ["whatisthislabel"]
+}])

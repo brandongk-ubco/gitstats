@@ -8,5 +8,7 @@ class TestReporter:
         template = MockTemplate()
         calculator = MockStatsCalculator()
         reporter = Reporter("test", template, calculator)
-        assert reporter.report(
-        ) == "group_nametest-startstart-endend-contributionscontributions-efforteffort"
+        assert reporter.report() == "{}{}".format(
+            "group_nametest-startstart-endend-contributionscontributions",
+            "-efforteffort-issues['issues']-excluded_issues['excluded_issues']-team_scoreteamscore"
+        )
