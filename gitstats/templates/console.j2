@@ -1,0 +1,29 @@
+Group Name: {{ group_name }}
+Period: {{ start }} to {{ end }}
+
+========================
+Individual Contributions
+========================
+{{ contributions if not contributions.empty else "None" }}
+
+=================
+Individual Effort
+=================
+{{ effort if not effort.empty else "None" }}
+
+=============
+Issues Closed
+=============
+{{ issues if not issues.empty else "None" }}
+
+============================================
+Issues Ignored Because of Improper Labelling
+============================================
+{{ excluded_issues if not excluded_issues.empty else "None" }}
+
+Team Score: {{ team_score }}
+
+======
+Scores
+======
+{{ final_scores if not final_scores.empty else "None" }}

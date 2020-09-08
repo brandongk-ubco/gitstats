@@ -1,6 +1,6 @@
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
 from random import randint
-from gitstats import StatsCollector, PullRequestRepository
+from gitstats import StatsCollector, GithubAPIRepository
 from datetime import datetime, timezone, timedelta
 
 
@@ -9,11 +9,11 @@ class TestStatsCollector:
     def test_no_prs(self):
         expected_prs = []
         repository = MockRepository(expected_prs)
-        pullRequestRepository = PullRequestRepository(repository)
+        api_repository = GithubAPIRepository(repository)
         end = datetime.now(timezone.utc) + timedelta(days=7)
         start = datetime.now(timezone.utc) - timedelta(days=7)
 
-        collector = StatsCollector(pullRequestRepository, start=start, end=end)
+        collector = StatsCollector(api_repository, start=start, end=end)
 
         assert len(collector.getPRs()) == 0
         assert len(collector.getReviews()) == 0
@@ -42,12 +42,12 @@ class TestStatsCollector:
                        review_comments=expected_review_comments[i],
                        issue_comments=expected_issue_comments[i]))
         repository = MockRepository(expected_prs)
-        pullRequestRepository = PullRequestRepository(repository)
+        api_repository = GithubAPIRepository(repository)
 
         end = datetime.now(timezone.utc) + timedelta(days=7)
         start = datetime.now(timezone.utc) - timedelta(days=7)
 
-        collector = StatsCollector(pullRequestRepository, start=start, end=end)
+        collector = StatsCollector(api_repository, start=start, end=end)
         prs = collector.getPRs()
         reviews = collector.getReviews()
         comments = collector.getComments()
@@ -58,3 +58,11 @@ class TestStatsCollector:
             len(e) for e in expected_issue_comments
         ]) + sum([len(e) for e in expected_review_comments])
         assert len(commits) == sum([len(e) for e in expected_commits])
+
+    def test_default_end(self):
+        default_end = StatsCollector.default_end()
+        now = datetime.utcnow()
+        assert default_end < now
+        assert default_end.weekday() == 4
+        assert (now - default_end).days < 7
+        assert default_end.time().isoformat() == "00:00:00"
