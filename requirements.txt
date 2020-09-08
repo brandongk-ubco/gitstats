@@ -4,3 +4,4 @@ PyGithub
 flake8
 yapf
 Jinja2
+pandas
