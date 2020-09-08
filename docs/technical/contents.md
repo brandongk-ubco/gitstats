@@ -15,6 +15,7 @@
 - Project Management
     - [Issue Management](./issues.md)
     - [Task Estimation](./estimation.md)
+    - [Project Dashboard](./dashboard.md)
 - Writing Code
     - [Testing your Software](./testing.md)
 - [Evaluation](./evaluation.md)
@@ -29,3 +30,4 @@
     -  [Using Tests to Inform Decisions](https://drive.google.com/file/d/1C96T5vUWZaAG6RtsR0b7yvmoTf-Sd-TF/view?usp=sharing "Using Tests to Inform Decisions")
     -  [Isolating Changes and Making Good PRs](https://drive.google.com/file/d/10Nk_DOStB9W1cFrYtx28y05y3lZI6FHl/view?usp=sharing "Isolating Changes and Making Good PRs")
     -  [Testing Your Code with Unit Test and Mocks](https://drive.google.com/file/d/1RNMUShsrPl4Ubylp6KHCHnXs97c18_2j/view?usp=sharing "Testing Your Code with Unit Tests and Mocks")
+    -  [Running gitstats on Syzygy]( https://google.com "Running gitstats on Syzygy")

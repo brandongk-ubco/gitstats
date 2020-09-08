@@ -1,14 +1,19 @@
-from gitstats.PullRequestRepository import PullRequestRepository
+from gitstats.GithubAPIRepository import GithubAPIRepository
 from datetime import datetime, timezone, timedelta
 import pytest
-from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
+from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue
 
 
-class TestPullRequestRepository:
+class TestGithubAPIRepository:
 
     def _mock_pr_response(self, expected_prs=[]):
         repository = MockRepository(expected_prs)
-        finder = PullRequestRepository(repository)
+        finder = GithubAPIRepository(repository)
+        return finder
+
+    def _mock_issue_response(self, expected_issues=[]):
+        repository = MockRepository(issues=expected_issues)
+        finder = GithubAPIRepository(repository)
         return finder
 
     @pytest.mark.findPRsByDateRange
@@ -39,7 +44,7 @@ class TestPullRequestRepository:
         assert len(prs) == 2
 
     @pytest.mark.findPRsByDateRange
-    def test_starts_at_right_date(self):
+    def test_prs_start_at_right_date(self):
         expected_prs = [
             MockPR(),
             MockPR(updated_at=datetime.now(timezone.utc) - timedelta(days=10))
@@ -51,9 +56,10 @@ class TestPullRequestRepository:
         assert len(prs) == 1
 
     @pytest.mark.findPRsByDateRange
-    def test_skips_after_end_date(self):
+    def test_prs_skip_after_end_date(self):
         expected_prs = [
-            MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1)),
+            MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1),
+                   closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
             MockPR()
         ]
         finder = self._mock_pr_response(expected_prs)
@@ -98,3 +104,56 @@ class TestPullRequestRepository:
         comments = finder.getCommentsByPullRequestId(pr.number)
         assert len(comments) == len(expected_review_comments) + len(
             expected_issue_comments)
+
+    @pytest.mark.findIssuesByDateRange
+    def test_no_issues(self):
+        expected_issues = []
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        prs = finder.findIssuesByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findIssuesByDateRange
+    def test_one_issue(self):
+        expected_issues = [MockIssue()]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == len(expected_issues)
+
+    @pytest.mark.findIssuesByDateRange
+    def test_two_issues(self):
+        expected_issues = [MockIssue(), MockIssue()]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 2
+
+    @pytest.mark.findIssuesByDateRange
+    def test_issues_start_at_right_date(self):
+        expected_issues = [
+            MockIssue(),
+            MockIssue(closed_at=datetime.now(timezone.utc) - timedelta(days=10),
+                      updated_at=datetime.now(timezone.utc) -
+                      timedelta(days=10))
+        ]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 1
+
+    @pytest.mark.findIssuesByDateRange
+    def test_issues_skip_after_end_date(self):
+        expected_issues = [
+            MockIssue(closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
+            MockIssue()
+        ]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 1

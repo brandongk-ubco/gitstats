@@ -1,7 +1,9 @@
-from .fixtures import prs as prs_fixtures, comments as comments_fixtures, commits as commits_fixtures
+from .fixtures import prs as prs_fixtures
+from .fixtures import comments as comments_fixtures
+from .fixtures import commits as commits_fixtures
+from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
 from gitstats import StatsCalculator
-import pandas as pd
 
 
 class TestStatsCalculator:
@@ -143,3 +145,40 @@ class TestStatsCalculator:
         effort = calculator.getEffortByUserFromContributions(contributions)
         assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
         assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
+
+    def test_get_start(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        assert calculator.get_start() == collector.get_start()
+
+    def test_get_end(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        assert calculator.get_end() == collector.get_end()
+
+    def test_issues(self):
+        collector = MockStatsCollector(issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+        assert len(issues) == 1
+        assert len(excluded_issues) == 4
+
+    def test_team_score_two_users_one_issue(self):
+        users = ["Bob", "Joan"]
+
+        collector = MockStatsCollector(issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.25
+
+    def test_team_score_one_user_one_issue(self):
+        users = ["Bob"]
+
+        collector = MockStatsCollector(issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.50

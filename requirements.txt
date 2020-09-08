@@ -1,6 +1,7 @@
 pytest
 pytest-cov
-seaborn
 PyGithub
 flake8
 yapf
+Jinja2
+pandas

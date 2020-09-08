@@ -6,6 +6,12 @@ class StatsCalculator:
     def __init__(self, statsCollector):
         self.statsCollecter = statsCollector
 
+    def get_start(self):
+        return self.statsCollecter.get_start()
+
+    def get_end(self):
+        return self.statsCollecter.get_end()
+
     def getPRsByAssignee(self):
         return self.statsCollecter.getPRs().groupby(['assignee']).agg({
             'id': 'count'
@@ -55,11 +61,13 @@ class StatsCalculator:
         return commits
 
     def getUsers(self):
-        return pd.concat([
+        users = pd.concat([
             self.statsCollecter.getPRs()["assignee"],
             self.statsCollecter.getComments()["user"],
-            self.statsCollecter.getCommits()["user"]
+            self.statsCollecter.getCommits()["user"],
+            self.statsCollecter.getIssues()["assignee"],
         ]).unique()
+        return [u for u in users if u]
 
     def getPRs(self):
         return self.statsCollecter.getPRs()["id"].unique()
@@ -146,3 +154,41 @@ class StatsCalculator:
         aggregated["effort"] = aggregated["effort"] / aggregated["effort"].max(
         ) * 100
         return aggregated
+
+    def getIssues(self):
+        issues = self.statsCollecter.getIssues()
+
+        issues["label_count"] = issues["labels"].apply(lambda l: len(l))
+        excluded_issues = issues[issues["label_count"] != 1]
+        issues = issues[issues["label_count"] == 1]
+
+        excluded_issues = excluded_issues.append(issues[issues["labels"].apply(
+            lambda i: i[0] not in ["task", "exploration", "chore"])],
+                                                 ignore_index=True)
+
+        issues["label"] = issues["labels"].apply(lambda i: i[0])
+        issues = issues.drop('labels', 1)
+
+        issues = issues[issues["label"].apply(
+            lambda i: i in ["task", "exploration", "chore"])]
+
+        if issues.empty:
+            issues = pd.DataFrame(columns=["label", "completed"])
+        else:
+            issues = issues.groupby(['label']).agg({
+                'number': 'count'
+            }).rename(columns={
+                'number': 'completed'
+            }).reset_index().sort_values(by="label")
+
+        return issues, excluded_issues
+
+    def getTeamScore(self, users, issues):
+        expected_issues = 2 * len(users)
+        return len(issues) / expected_issues
+
+    def getFinalScores(self, effort, team_score):
+        scores = pd.DataFrame()
+        scores['user'] = effort['user']
+        scores["score"] = effort["effort"] * team_score / 100.0
+        return scores

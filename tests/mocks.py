@@ -2,20 +2,25 @@ from datetime import datetime, timezone
 from random import randint
 import uuid
 import pandas as pd
+from github.GithubException import UnknownObjectException
 
 
 class MockRepository:
 
-    def __init__(self, prs=[]):
+    def __init__(self, prs=[], issues=[]):
         self.prs = prs
+        self.issues = issues
 
     def get_pulls(self, *args, **kwargs):
         return self.prs
 
+    def get_issues(self, *args, **kwargs):
+        return self.issues
+
     def get_pull(self, id: int):
         pr = [p for p in self.prs if p.number == id]
         if len(pr) == 0:
-            raise ValueError("PR does not exist")
+            raise UnknownObjectException(status=404, data="PR does not exist")
         if len(pr) > 1:
             raise ValueError("Multiple PRs exist")
         return pr[0]
@@ -25,6 +30,7 @@ class MockPR:
 
     def __init__(self,
                  updated_at=None,
+                 closed_at=None,
                  assignee=None,
                  merged=False,
                  number=None,
@@ -33,6 +39,8 @@ class MockPR:
                  issue_comments=[],
                  review_comments=[]):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
+            timezone.utc)
+        self.closed_at = closed_at if closed_at is not None else datetime.now(
             timezone.utc)
         self.assignee = assignee
         self.merged = merged
@@ -110,7 +118,13 @@ class MockComment:
 
 class MockStatsCollector:
 
-    def __init__(self, prs=None, reviews=None, comments=None, commits=None):
+    def __init__(self,
+                 prs=None,
+                 reviews=None,
+                 comments=None,
+                 commits=None,
+                 issues=None,
+                 users=None):
         self.prs = prs if prs is not None else pd.DataFrame(
             columns=["id", "date", "assignee", "merged"])
         self.reviews = reviews if reviews is not None else pd.DataFrame(
@@ -122,6 +136,9 @@ class MockStatsCollector:
                 "pr", "user", "date", "date", "additions", "deletions", "id",
                 "changes"
             ])
+        self.issues = issues if issues is not None else pd.DataFrame(
+            columns=["number", "date", "assignee", "labels"])
+        self.users = users if users is not None else ["Bob", "Joan"]
 
     def getPRs(self):
         return self.prs.copy()
@@ -134,3 +151,67 @@ class MockStatsCollector:
 
     def getComments(self):
         return self.comments.copy()
+
+    def get_start(self):
+        return "start"
+
+    def get_end(self):
+        return "end"
+
+    def getIssues(self):
+        return self.issues.copy()
+
+    def get_users(self):
+        return self.users
+
+
+class MockStatsCalculator:
+
+    def getContributionsByUserAndPR(self):
+        return "contributions"
+
+    def getEffortByUserFromContributions(self, contribuntions):
+        return "effort"
+
+    def get_start(self):
+        return "start"
+
+    def get_end(self):
+        return "end"
+
+    def getIssues(self):
+        return ["issues"], ["excluded_issues"]
+
+    def getTeamScore(self, issues, excluded_issues):
+        return "teamscore"
+
+    def getUsers(self):
+        return ["Bob J.", "Joan B."]
+
+    def getFinalScores(self, effort, team_score):
+        return "finalscores"
+
+
+class MockTemplate:
+
+    def render(self, *args, **kwargs):
+        return "-".join([k + str(v) for k, v in kwargs.items()])
+
+
+class MockIssue:
+
+    def __init__(self,
+                 closed_at=None,
+                 updated_at=None,
+                 assignee=None,
+                 state="closed",
+                 number=None,
+                 labels=[]):
+        self.closed_at = closed_at if closed_at is not None else datetime.now(
+            timezone.utc)
+        self.updated_at = updated_at if updated_at is not None else datetime.now(
+            timezone.utc)
+        self.assignee = assignee
+        self.number = number if number is not None else randint(1, 1e10)
+        self.labels = labels
+        self.state = state

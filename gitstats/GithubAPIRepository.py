@@ -1,8 +1,9 @@
 import pandas as pd
 from datetime import datetime
+from github.GithubException import UnknownObjectException
 
 
-class PullRequestRepository:
+class GithubAPIRepository:
 
     def __init__(self, repository):
         self.repository = repository
@@ -14,7 +15,7 @@ class PullRequestRepository:
                                         direction="desc")
 
         for pr in prs:
-            if pr.updated_at > end:
+            if pr.closed_at > end:
                 continue
             if pr.updated_at < start:
                 break
@@ -102,6 +103,40 @@ class PullRequestRepository:
                     "user": comment.user.name,
                     "id": comment.id,
                     "type": "issue"
+                },
+                ignore_index=True)
+
+        return df
+
+    def findIssuesByDateRange(self, start, end):
+        df = pd.DataFrame(columns=["number", "date", "assignee", "labels"])
+        issues = []
+        for issue in self.repository.get_issues(state="closed",
+                                                sort="updated",
+                                                direction="desc",
+                                                assignee="*"):
+
+            if issue.closed_at > end:
+                continue
+            if issue.updated_at < start:
+                break
+
+            try:
+                self.repository.get_pull(issue.number)
+            except UnknownObjectException:
+                issues.append(issue)
+
+        for issue in issues:
+            df = df.append(
+                {
+                    "number":
+                        issue.number,
+                    "date":
+                        issue.closed_at,
+                    "assignee":
+                        "" if issue.assignee is None else issue.assignee.name,
+                    "labels":
+                        [str(i.name).lower().strip() for i in issue.labels]
                 },
                 ignore_index=True)
 
