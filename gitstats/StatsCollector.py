@@ -1,10 +1,24 @@
 from .dataframe import aggregate_list
+from datetime import datetime, timedelta
 
 
 class StatsCollector:
 
-    def __init__(self, repository, start, end):
+    @staticmethod
+    def default_end():
+        today = datetime.utcnow()
+        today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+        return today - timedelta(days=today.weekday()) + timedelta(days=4,
+                                                                   weeks=-1)
+
+    def __init__(self, repository, start=None, end=None):
         self.repository = repository
+
+        if end is None:
+            end = StatsCollector.default_end()
+        if start is None:
+            start = end - timedelta(days=7)
+
         self.start = start
         self.end = end
         self._collect()
@@ -27,6 +41,12 @@ class StatsCollector:
         self.comments = aggregate_list(
             [self.repository.getCommentsByPullRequestId(pr) for pr in pr_ids],
             columns=["pr", "date", "user", "id", "type"])
+
+    def get_start(self):
+        return self.start
+
+    def get_end(self):
+        return self.end
 
     def getPRs(self):
         return self.prs.copy()

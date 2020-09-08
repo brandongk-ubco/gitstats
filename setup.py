@@ -15,7 +15,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/brandongk-ubco/gitstats",
     packages=setuptools.find_packages(),
-    install_requires=['seaborn', 'PyGithub'],
+    install_requires=['seaborn', 'PyGithub', 'Jinja2'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Affero General Public License v3 (AGPLv3)",

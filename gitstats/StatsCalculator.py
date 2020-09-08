@@ -6,6 +6,12 @@ class StatsCalculator:
     def __init__(self, statsCollector):
         self.statsCollecter = statsCollector
 
+    def get_start(self):
+        return self.statsCollecter.get_start()
+
+    def get_end(self):
+        return self.statsCollecter.get_end()
+
     def getPRsByAssignee(self):
         return self.statsCollecter.getPRs().groupby(['assignee']).agg({
             'id': 'count'
