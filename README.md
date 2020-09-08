@@ -4,6 +4,20 @@ This repository documents how to use the [GitHub project management](https://git
 
 For a full list of what's included, see the [Table of Contents](./docs/technical/contents.md)
 
+# Installing and Running gitstats
+
+It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will need to:
+
+1. Create a [personal access token](https://github.com/settings/tokens) in GitHub.  Note that these personal access tokens are applied on the user, not the repository.  If your repository is public, you do not need to provide it any scope; if your repository is private, you need to provide the `repo` scope.
+
+1. Login to [syzygy](https://ubc.syzygy.ca) sing your CWL
+
+1. Look at the [example](./docs/examples/gitstats.ipynb) that exists in this repo.  You will need to change the access token variable to the access token you created above, as well as the group name and repository.  The repository is the GitHub path, including user name and repository name.
+
+1. Run the script and observe the results.
+
+It is also possible to run gitstats locally.  You will need to have a Python 3.6+ environment setup, and [anaconda](https://www.anaconda.com/products/individual) is suggested.  Install requirements using `pip install -r requirements.txt` and either run the example notebook through Jupyter or convert it to a simple script.
+
 # Getting Stared
 
 1) Make sure you understand [agile](./docs/technical/agile.md) and read the [manifesto](./docs/technical/agile_manifesto.md).  Also, read and understand the overview of the [software development lifecycle](./docs/technical/lifecycle.md).
