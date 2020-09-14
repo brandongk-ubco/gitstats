@@ -5,11 +5,19 @@ from datetime import datetime, timedelta
 class StatsCollector:
 
     @staticmethod
-    def default_end():
-        today = datetime.utcnow()
+    def default_end(today=None):
+        if today is None:
+            today = datetime.utcnow()
         today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-        return today - timedelta(days=today.weekday()) + timedelta(days=4,
-                                                                   weeks=-1)
+        if today.weekday() < 2:
+            today = today - timedelta(weeks=1)
+        return today - timedelta(days=today.weekday()) + timedelta(days=2)
+
+    @staticmethod
+    def default_start(end=None):
+        if end is None:
+            end = StatsCollector.default_end()
+        return end - timedelta(days=7)
 
     def __init__(self, repository, start=None, end=None):
         self.repository = repository
@@ -17,7 +25,7 @@ class StatsCollector:
         if end is None:
             end = StatsCollector.default_end()
         if start is None:
-            start = end - timedelta(days=7)
+            start = StatsCollector.default_start()
 
         self.start = start
         self.end = end
