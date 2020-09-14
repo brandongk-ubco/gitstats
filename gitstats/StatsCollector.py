@@ -13,19 +13,20 @@ class StatsCollector:
             today = today - timedelta(weeks=1)
         return today - timedelta(days=today.weekday()) + timedelta(days=2)
 
-    @staticmethod
-    def default_start(end=None):
+    def default_start(self, end=None):
         if end is None:
             end = StatsCollector.default_end()
-        return end - timedelta(days=7)
+        return end - timedelta(weeks=self.weeks)
 
-    def __init__(self, repository, start=None, end=None):
+    def __init__(self, repository, start=None, end=None, weeks=1):
         self.repository = repository
+
+        self.weeks = weeks
 
         if end is None:
             end = StatsCollector.default_end()
         if start is None:
-            start = StatsCollector.default_start()
+            start = self.default_start(end)
 
         self.start = start
         self.end = end

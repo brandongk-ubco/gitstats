@@ -60,16 +60,21 @@ class TestStatsCollector:
         assert len(commits) == sum([len(e) for e in expected_commits])
 
     def test_default_dates(self):
-        for i in range(7):
-            today = datetime.utcnow()
-            today = today - timedelta(days=today.weekday()) + timedelta(
-                days=i, weeks=-1)
+        repository = MockRepository()
+        api_repository = GithubAPIRepository(repository)
+        for w in range(1, 7):
+            collector = StatsCollector(api_repository, weeks=w)
 
-            default_end = StatsCollector.default_end(today)
-            default_start = StatsCollector.default_start(default_end)
+            for i in range(7):
+                today = datetime.utcnow()
+                today = today - timedelta(days=today.weekday()) + timedelta(
+                    days=i, weeks=-1)
 
-            assert default_end < today
-            assert default_end.weekday() == 2
-            assert (today - default_end).days <= 6
-            assert default_end.time().isoformat() == "00:00:00"
-            assert (default_end - default_start) == timedelta(days=7)
+                default_end = StatsCollector.default_end(today)
+                default_start = collector.default_start(default_end)
+
+                assert default_end < today
+                assert default_end.weekday() == 2
+                assert (today - default_end).days <= 6
+                assert default_end.time().isoformat() == "00:00:00"
+                assert (default_end - default_start) == timedelta(days=7 * w)

@@ -24,9 +24,9 @@ It is also possible to run gitstats locally.  You will need to have a Python 3.6
 
 1) As a team, understand the [roles](./docs/technical/roles.md) and agree on each member's role for the duration of the project.
 
-1) Complete the [individual git exercise](./docs/technical/git_exercise_individual.md) to become familiar with using git for version control.
+1) Complete the [individual git exercise](https://people.ok.ubc.ca/bowenhui/499/gitex_indiv.html) to become familiar with using git for version control.
 
-1) Complete the [team git exercise](./docs/technical/git_exercise_team.md) to become familiar with using git as a team.
+1) Complete the [team git exercise](https://people.ok.ubc.ca/bowenhui/499/gitex_team.html) to become familiar with using git as a team.
 
 1) Have the DevOps / Technical Lead [setup the github repository](./docs/technical/git_basics.md).  Some features require a pro github account, which can be obtained using [GitHub for Education](https://education.github.com/pack) and your school e-mail address.
 
