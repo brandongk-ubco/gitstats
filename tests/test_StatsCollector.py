@@ -73,8 +73,7 @@ class TestStatsCollector:
                 default_end = StatsCollector.default_end(today)
                 default_start = collector.default_start(default_end)
 
-                assert default_end < today
+                assert default_end - timedelta(hours=24) < today
                 assert default_end.weekday() == 2
                 assert (today - default_end).days <= 6
-                assert default_end.time().isoformat() == "00:00:00"
                 assert (default_end - default_start) == timedelta(days=7 * w)

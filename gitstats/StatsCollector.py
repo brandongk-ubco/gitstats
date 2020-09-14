@@ -1,5 +1,6 @@
 from .dataframe import aggregate_list
 from datetime import datetime, timedelta
+import pytz
 
 
 class StatsCollector:
@@ -7,8 +8,11 @@ class StatsCollector:
     @staticmethod
     def default_end(today=None):
         if today is None:
-            today = datetime.utcnow()
-        today = today.replace(hour=0, minute=0, second=0, microsecond=0)
+            today = datetime.utcnow().replace(tzinfo=pytz.UTC)
+        tzoffset = datetime.utcnow() - datetime.now()
+        today = today.replace(hour=0, minute=0, second=0,
+                              microsecond=0) + tzoffset + timedelta(hours=10,
+                                                                    minutes=30)
         if today.weekday() < 2:
             today = today - timedelta(weeks=1)
         return today - timedelta(days=today.weekday()) + timedelta(days=2)
