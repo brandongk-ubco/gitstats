@@ -53,7 +53,3 @@ The final weekly score will be assigned to each individual through a combination
  Note that:
   - progress is in [0,1], and is the same for all team members.
   - effort is in [0,1], and is not the same for all team members.
-
-# Milestone Score
-
-A score will be assigned to a team based on the number of features completed at each milestone.  This is a somewhat subjective process... **TODO**?

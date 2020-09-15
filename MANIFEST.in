@@ -1,2 +1,2 @@
-exclude tests
-include gitstats/templates/*
+exclude tests/*
+include gitstats/templates/console.j2
