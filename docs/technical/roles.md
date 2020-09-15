@@ -38,12 +38,6 @@ Your job is to make sure that the technical requirements are being met.  You are
 - **Deployable Artifact**  Master should be packaged as a deployable artifact; this ensures that all teammates can view progress and demos can be performed.
 - **Integration Help** You are to help others resolve any integration issues that arise, and help with merging PRs if required.
 
-[**Video: Deployable Artifacts** <br /> ![Video: Deployable Artifacts](./5.jpg) ](https://drive.google.com/file/d/1JdmV03vOxWLYWSVmAgdGr2e1YN7ff-5e/view?usp=sharing "Video: Deployable Artifacts")
-
-[**Video: Implementing Continuous Integration** <br /> ![Video: Implementing Continuous Integration](./7.jpg) ](https://drive.google.com/file/d/1hlTaBNjvvH14oY4eSOJkMBSWrICa70si/view?usp=sharing "Video: Implementing Continuous Integration")
-
-[**Video: Using Tests to Inform Decisions** <br /> ![Video: Using Tests to Inform Decisions](./8.jpg) ](https://drive.google.com/file/d/1C96T5vUWZaAG6RtsR0b7yvmoTf-Sd-TF/view?usp=sharing "Video: Using Tests to Inform Decisions")
-
 ## Project / Scrum Manager
 
 Your job is to make sure that the project is on track and that the process is being followed by everybody.  In scrum meetings, you should be mainly a facilitator (rather than a technical expert) making sure the process is being followed and all participants have a voice in the proceedings.  Any delays / scope changes should be brought up to the professor early and it is your responsibility to communicate them.

@@ -10,13 +10,12 @@
 - Git and GitHub
     - [Basics](./git_basics.md)
     - [Tips](./git_tips.md)
-    - [Individual Exercise](./git_exercise_individual.md)
-    - [Team Exercise](./git_exercise_team.md)
 - Project Management
     - [Issue Management](./issues.md)
     - [Task Estimation](./estimation.md)
     - [Project Dashboard](./dashboard.md)
 - Writing Code
+    - [Coding Best Practices](./best_practices.md)
     - [Testing your Software](./testing.md)
 - [Evaluation](./evaluation.md)
 - Videos
