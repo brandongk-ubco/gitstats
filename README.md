@@ -18,7 +18,7 @@ It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will nee
 
 It is also possible to run gitstats locally.  You will need to have a Python 3.6+ environment setup, and [anaconda](https://www.anaconda.com/products/individual) is suggested.  Install requirements using `pip install -r requirements.txt` and either run the example notebook through Jupyter or convert it to a simple script.
 
-# Getting Stared
+# Getting Started
 
 1) Make sure you understand [agile](./docs/technical/agile.md) and read the [manifesto](./docs/technical/agile_manifesto.md).  Also, read and understand the overview of the [software development lifecycle](./docs/technical/lifecycle.md).
 
