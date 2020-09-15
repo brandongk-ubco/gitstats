@@ -15,6 +15,7 @@
     - [Task Estimation](./estimation.md)
     - [Project Dashboard](./dashboard.md)
 - Writing Code
+    - [Coding Best Practices](./best_practices.md)
     - [Testing your Software](./testing.md)
 - [Evaluation](./evaluation.md)
 - Videos
