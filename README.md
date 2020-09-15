@@ -10,7 +10,7 @@ It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will nee
 
 1. Create a [personal access token](https://github.com/settings/tokens) in GitHub.  Note that these personal access tokens are applied on the user, not the repository.  If your repository is public, you do not need to provide it any scope; if your repository is private, you need to provide the `repo` scope.
 
-1. Login to [syzygy](https://ubc.syzygy.ca) sing your CWL
+1. Login to [syzygy](https://ubc.syzygy.ca) using your CWL
 
 1. Look at the [example](./docs/examples/gitstats.ipynb) that exists in this repo.  You will need to change the access token variable to the access token you created above, as well as the group name and repository.  The repository is the GitHub path, including user name and repository name.
 
@@ -18,15 +18,15 @@ It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will nee
 
 It is also possible to run gitstats locally.  You will need to have a Python 3.6+ environment setup, and [anaconda](https://www.anaconda.com/products/individual) is suggested.  Install requirements using `pip install -r requirements.txt` and either run the example notebook through Jupyter or convert it to a simple script.
 
-# Getting Stared
+# Getting Started
 
 1) Make sure you understand [agile](./docs/technical/agile.md) and read the [manifesto](./docs/technical/agile_manifesto.md).  Also, read and understand the overview of the [software development lifecycle](./docs/technical/lifecycle.md).
 
 1) As a team, understand the [roles](./docs/technical/roles.md) and agree on each member's role for the duration of the project.
 
-1) Complete the [individual git exercise](./docs/technical/git_exercise_individual.md) to become familiar with using git for version control.
+1) Complete the [individual git exercise](https://people.ok.ubc.ca/bowenhui/499/gitex_indiv.html) to become familiar with using git for version control.
 
-1) Complete the [team git exercise](./docs/technical/git_exercise_team.md) to become familiar with using git as a team.
+1) Complete the [team git exercise](https://people.ok.ubc.ca/bowenhui/499/gitex_team.html) to become familiar with using git as a team.
 
 1) Have the DevOps / Technical Lead [setup the github repository](./docs/technical/git_basics.md).  Some features require a pro github account, which can be obtained using [GitHub for Education](https://education.github.com/pack) and your school e-mail address.
 

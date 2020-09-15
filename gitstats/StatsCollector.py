@@ -1,23 +1,36 @@
 from .dataframe import aggregate_list
 from datetime import datetime, timedelta
+import pytz
 
 
 class StatsCollector:
 
     @staticmethod
-    def default_end():
-        today = datetime.utcnow()
-        today = today.replace(hour=0, minute=0, second=0, microsecond=0)
-        return today - timedelta(days=today.weekday()) + timedelta(days=4,
-                                                                   weeks=-1)
+    def default_end(today=None):
+        if today is None:
+            today = datetime.utcnow().replace(tzinfo=pytz.UTC)
+        tzoffset = datetime.utcnow() - datetime.now()
+        today = today.replace(hour=0, minute=0, second=0,
+                              microsecond=0) + tzoffset + timedelta(hours=10,
+                                                                    minutes=30)
+        if today.weekday() < 2:
+            today = today - timedelta(weeks=1)
+        return today - timedelta(days=today.weekday()) + timedelta(days=2)
 
-    def __init__(self, repository, start=None, end=None):
+    def default_start(self, end=None):
+        if end is None:
+            end = StatsCollector.default_end()
+        return end - timedelta(weeks=self.weeks)
+
+    def __init__(self, repository, start=None, end=None, weeks=1):
         self.repository = repository
+
+        self.weeks = weeks
 
         if end is None:
             end = StatsCollector.default_end()
         if start is None:
-            start = end - timedelta(days=7)
+            start = self.default_start(end)
 
         self.start = start
         self.end = end

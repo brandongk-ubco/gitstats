@@ -37,3 +37,8 @@ A [chore](https://scrumdictionary.com/term/chore/) is an item which provides val
 
 Generally, the client doesn't care whether or not a chore is completed.  They can be seen as implementation details from their perspective.  However, chores can create tools which speed up development.  They should be embarked upon if the return-on-investment is high; that is, over the life of the project, completion of the chore will save more time than the work it took to implement.
 
+Two very common chores are described in the below videos.
+
+[**Video: Deployable Artifacts** <br /> ![Video: Deployable Artifacts](./5.jpg) ](https://drive.google.com/file/d/1JdmV03vOxWLYWSVmAgdGr2e1YN7ff-5e/view?usp=sharing "Video: Deployable Artifacts")
+
+[**Video: Implementing Continuous Integration** <br /> ![Video: Implementing Continuous Integration](./7.jpg) ](https://drive.google.com/file/d/1hlTaBNjvvH14oY4eSOJkMBSWrICa70si/view?usp=sharing "Video: Implementing Continuous Integration")
