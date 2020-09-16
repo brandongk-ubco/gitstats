@@ -30,7 +30,7 @@ class MockPR:
 
     def __init__(self,
                  updated_at=None,
-                 closed_at=None,
+                 merged_at=None,
                  assignee=None,
                  merged=False,
                  number=None,
@@ -40,7 +40,7 @@ class MockPR:
                  review_comments=[]):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
             timezone.utc)
-        self.closed_at = closed_at if closed_at is not None else datetime.now(
+        self.merged_at = merged_at if merged_at is not None else datetime.now(
             timezone.utc)
         self.assignee = assignee
         self.merged = merged
