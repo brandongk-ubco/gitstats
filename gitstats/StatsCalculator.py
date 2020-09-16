@@ -185,10 +185,10 @@ class StatsCalculator:
 
     def getTeamScore(self, users, issues):
         expected_issues = 2 * len(users)
-        return len(issues) / expected_issues
+        return sum(issues["completed"]) / expected_issues
 
     def getFinalScores(self, effort, team_score):
         scores = pd.DataFrame()
         scores['user'] = effort['user']
-        scores["score"] = effort["effort"] * team_score / 100.0
+        scores["score"] = effort["effort"] * team_score
         return scores

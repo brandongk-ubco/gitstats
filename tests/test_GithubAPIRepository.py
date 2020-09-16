@@ -59,7 +59,7 @@ class TestGithubAPIRepository:
     def test_prs_skip_after_end_date(self):
         expected_prs = [
             MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1),
-                   closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
+                   merged_at=datetime.now(timezone.utc) + timedelta(days=1)),
             MockPR()
         ]
         finder = self._mock_pr_response(expected_prs)

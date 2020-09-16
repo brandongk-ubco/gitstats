@@ -11,11 +11,11 @@ class GithubAPIRepository:
     def findPRsByDateRange(self, start, end):
         df = pd.DataFrame(columns=["id", "date", "assignee", "merged"])
         prs = self.repository.get_pulls(state="closed",
-                                        sort="updated",
+                                        sort="merged",
                                         direction="desc")
 
         for pr in prs:
-            if pr.closed_at > end:
+            if pr.merged_at > end:
                 continue
             if pr.updated_at < start:
                 break
@@ -64,13 +64,21 @@ class GithubAPIRepository:
                 "%Y-%m-%dT%H:%M:%SZ")
             df = df.append(
                 {
-                    "pr": int(pr.number),
-                    "user": commit.author.name,
-                    "date": date,
-                    "additions": commit.stats.additions,
-                    "deletions": commit.stats.deletions,
-                    "id": commit.sha,
-                    "changes": commit.stats.total
+                    "pr":
+                        int(pr.number),
+                    "user":
+                        commit.author.name
+                        if commit.author.name else commit.author.login,
+                    "date":
+                        date,
+                    "additions":
+                        commit.stats.additions,
+                    "deletions":
+                        commit.stats.deletions,
+                    "id":
+                        commit.sha,
+                    "changes":
+                        commit.stats.total
                 },
                 ignore_index=True)
 
@@ -86,11 +94,17 @@ class GithubAPIRepository:
         for comment in comments:
             df = df.append(
                 {
-                    "pr": int(pr.number),
-                    "date": comment.updated_at,
-                    "user": comment.user.name,
-                    "id": comment.id,
-                    "type": "review"
+                    "pr":
+                        int(pr.number),
+                    "date":
+                        comment.updated_at,
+                    "user":
+                        comment.user.name
+                        if comment.user.name else comment.user.login,
+                    "id":
+                        comment.id,
+                    "type":
+                        "review"
                 },
                 ignore_index=True)
 
@@ -98,11 +112,17 @@ class GithubAPIRepository:
         for comment in comments:
             df = df.append(
                 {
-                    "pr": int(pr.number),
-                    "date": comment.updated_at,
-                    "user": comment.user.name,
-                    "id": comment.id,
-                    "type": "issue"
+                    "pr":
+                        int(pr.number),
+                    "date":
+                        comment.updated_at,
+                    "user":
+                        comment.user.name
+                        if comment.user.name else comment.user.login,
+                    "id":
+                        comment.id,
+                    "type":
+                        "issue"
                 },
                 ignore_index=True)
 
@@ -112,10 +132,8 @@ class GithubAPIRepository:
         df = pd.DataFrame(columns=["number", "date", "assignee", "labels"])
         issues = []
         for issue in self.repository.get_issues(state="closed",
-                                                sort="updated",
-                                                direction="desc",
-                                                assignee="*"):
-
+                                                sort="closed",
+                                                direction="desc"):
             if issue.closed_at > end:
                 continue
             if issue.updated_at < start:
