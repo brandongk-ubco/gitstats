@@ -12,7 +12,7 @@ It is easy to run gitstats through [syzygy](https://ubc.syzygy.ca). You will nee
 
 1. Login to [syzygy](https://ubc.syzygy.ca) using your CWL
 
-1. Look at the [example](./docs/examples/gitstats.ipynb) that exists in this repo.  You will need to change the access token variable to the access token you created above, as well as the group name and repository.  The repository is the GitHub path, including user name and repository name.
+1. Look at the [example](./docs/examples/syzygy.ipynb) that exists in this repo.  You will need to change the access token variable to the access token you created above, as well as the group name and repository.  The repository is the GitHub path, including user name and repository name.
 
 1. Run the script and observe the results.
 
