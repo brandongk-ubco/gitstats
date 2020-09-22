@@ -15,7 +15,7 @@ class GithubAPIRepository:
                                         direction="desc")
 
         for pr in prs:
-            if pr.merged_at > end:
+            if pr.merged_at is None or pr.merged_at > end:
                 continue
             if pr.updated_at < start:
                 break

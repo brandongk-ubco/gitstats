@@ -185,6 +185,8 @@ class StatsCalculator:
 
     def getTeamScore(self, users, issues):
         expected_issues = 2 * len(users)
+        if expected_issues == 0:
+            return 0.
         return sum(issues["completed"]) / expected_issues
 
     def getFinalScores(self, effort, team_score):
