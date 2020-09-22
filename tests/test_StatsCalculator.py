@@ -182,3 +182,13 @@ class TestStatsCalculator:
 
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.50
+
+    def test_team_score_no_users(self):
+        users = []
+
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.00

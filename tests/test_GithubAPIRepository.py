@@ -35,6 +35,16 @@ class TestGithubAPIRepository:
         assert len(prs) == len(expected_prs)
 
     @pytest.mark.findPRsByDateRange
+    def test_not_merged(self):
+        expected_prs = [MockPR()]
+        expected_prs[0].merged_at = None
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now(timezone.utc)
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findPRsByDateRange
     def test_two_prs(self):
         expected_prs = [MockPR(), MockPR()]
         finder = self._mock_pr_response(expected_prs)
