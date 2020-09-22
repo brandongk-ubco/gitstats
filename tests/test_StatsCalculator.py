@@ -4,6 +4,7 @@ from .fixtures import commits as commits_fixtures
 from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
 from gitstats import StatsCalculator
+from datetime import datetime, timedelta
 
 
 class TestStatsCalculator:
@@ -149,12 +150,13 @@ class TestStatsCalculator:
     def test_get_start(self):
         collector = MockStatsCollector()
         calculator = StatsCalculator(collector)
-        assert calculator.get_start() == collector.get_start()
+        assert calculator.get_start() - collector.get_start() < timedelta(
+            seconds=1)
 
     def test_get_end(self):
         collector = MockStatsCollector()
         calculator = StatsCalculator(collector)
-        assert calculator.get_end() == collector.get_end()
+        assert calculator.get_end() - collector.get_end() < timedelta(seconds=1)
 
     def test_issues(self):
         collector = MockStatsCollector(issues=issues_fixtures)
@@ -172,6 +174,51 @@ class TestStatsCalculator:
 
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.25
+
+    def test_expected_issues_one_week(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues == 2
+
+    def test_expected_issues_two_weeks(self):
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start, end=end)
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues == 4
+
+    def test_team_score_one_user_one_issue_two_weeks(self):
+        users = ["Bob"]
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start,
+                                       end=end,
+                                       issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.25
+
+    def test_team_score_two_users_one_issue_two_weeks(self):
+        users = ["Bob", "Joan"]
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start,
+                                       end=end,
+                                       issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.125
 
     def test_team_score_one_user_one_issue(self):
         users = ["Bob"]
