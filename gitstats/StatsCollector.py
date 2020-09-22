@@ -1,13 +1,11 @@
 from .dataframe import aggregate_list
-from datetime import datetime, timedelta
 
 
 class StatsCollector:
 
-    def __init__(self, repository, start, end, weeks=1):
+    def __init__(self, repository, start, end):
         self.repository = repository
 
-        self.weeks = weeks
         self.start = start
         self.end = end
         self._collect()

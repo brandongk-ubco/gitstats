@@ -1,7 +1,7 @@
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
 from random import randint
 from gitstats import StatsCollector, GithubAPIRepository
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 
 
 class TestStatsCollector:
@@ -10,8 +10,8 @@ class TestStatsCollector:
         expected_prs = []
         repository = MockRepository(expected_prs)
         api_repository = GithubAPIRepository(repository)
-        end = datetime.now(timezone.utc) + timedelta(days=7)
-        start = datetime.now(timezone.utc) - timedelta(days=7)
+        end = datetime.now() + timedelta(days=7)
+        start = datetime.now() - timedelta(days=7)
 
         collector = StatsCollector(api_repository, start=start, end=end)
 
@@ -44,8 +44,8 @@ class TestStatsCollector:
         repository = MockRepository(expected_prs)
         api_repository = GithubAPIRepository(repository)
 
-        end = datetime.now(timezone.utc) + timedelta(days=7)
-        start = datetime.now(timezone.utc) - timedelta(days=7)
+        end = datetime.now() + timedelta(days=7)
+        start = datetime.now() - timedelta(days=7)
 
         collector = StatsCollector(api_repository, start=start, end=end)
         prs = collector.getPRs()

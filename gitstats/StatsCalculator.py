@@ -183,8 +183,15 @@ class StatsCalculator:
 
         return issues, excluded_issues
 
+    def getExpectedIssues(self, users):
+        days = round(
+            (self.get_end() - self.get_start()).total_seconds() / 86400)
+        if days == 0:
+            return 0
+        return int((days / 7) * (2 * len(users)))
+
     def getTeamScore(self, users, issues):
-        expected_issues = 2 * len(users)
+        expected_issues = self.getExpectedIssues(users)
         if expected_issues == 0:
             return 0.
         return sum(issues["completed"]) / expected_issues

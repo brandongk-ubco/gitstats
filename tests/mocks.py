@@ -1,4 +1,4 @@
-from datetime import datetime, timezone
+from datetime import datetime, timedelta
 from random import randint
 import uuid
 import pandas as pd
@@ -39,9 +39,8 @@ class MockPR:
                  issue_comments=[],
                  review_comments=[]):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
-            timezone.utc)
-        self.merged_at = merged_at if merged_at is not None else datetime.now(
-            timezone.utc)
+        )
+        self.merged_at = merged_at if merged_at is not None else datetime.now()
         self.assignee = assignee
         self.merged = merged
         self.number = number if number is not None else randint(1, 1e10)
@@ -72,7 +71,7 @@ class MockReview:
         self.id = id if id is not None else randint(1, 1e10)
         self.state = state
         self.submitted_at = submitted_at if submitted_at is not None else datetime.now(
-            timezone.utc)
+        )
 
 
 class MockAuthor:
@@ -97,7 +96,7 @@ class MockCommit:
         self.author = author if author is not None else MockAuthor()
         self.stats = stats if stats is not None else MockStats()
         self.sha = sha if sha is not None else uuid.uuid4().hex
-        self.date = date if date is not None else datetime.now(timezone.utc)
+        self.date = date if date is not None else datetime.now()
         self.raw_data = {
             "commit": {
                 "author": {
@@ -111,7 +110,7 @@ class MockComment:
 
     def __init__(self, updated_at=None, user=None, id=None):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
-            timezone.utc)
+        )
         self.user = user if user is not None else MockAuthor()
         self.id = id if id is not None else uuid.uuid4().hex
 
@@ -124,7 +123,9 @@ class MockStatsCollector:
                  comments=None,
                  commits=None,
                  issues=None,
-                 users=None):
+                 users=None,
+                 start=None,
+                 end=None):
         self.prs = prs if prs is not None else pd.DataFrame(
             columns=["id", "date", "assignee", "merged"])
         self.reviews = reviews if reviews is not None else pd.DataFrame(
@@ -140,6 +141,9 @@ class MockStatsCollector:
             columns=["number", "date", "assignee", "labels"])
         self.users = users if users is not None else ["Bob", "Joan"]
 
+        self.end = datetime.now() if end is None else end
+        self.start = self.end - timedelta(days=7) if start is None else start
+
     def getPRs(self):
         return self.prs.copy()
 
@@ -153,10 +157,10 @@ class MockStatsCollector:
         return self.comments.copy()
 
     def get_start(self):
-        return "start"
+        return self.start
 
     def get_end(self):
-        return "end"
+        return self.end
 
     def getIssues(self):
         return self.issues.copy()
@@ -207,10 +211,9 @@ class MockIssue:
                  state="closed",
                  number=None,
                  labels=[]):
-        self.closed_at = closed_at if closed_at is not None else datetime.now(
-            timezone.utc)
+        self.closed_at = closed_at if closed_at is not None else datetime.now()
         self.updated_at = updated_at if updated_at is not None else datetime.now(
-            timezone.utc)
+        )
         self.assignee = assignee
         self.number = number if number is not None else randint(1, 1e10)
         self.labels = labels

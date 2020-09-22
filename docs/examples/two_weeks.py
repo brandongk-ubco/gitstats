@@ -9,15 +9,17 @@ from datetime import datetime
 
 print("Running with gitstats version: {}".format(gitstats.__version__))
 
-access_token = "8eeb340597670d9169c9350f99aaefa39c1def03"
+access_token = "593dbe85dc185af39f70710ecf67703798449d0a"
 repository = "brandongk-ubco/gitstats"
 group_name = "gitstats"
 
 start = datetime.fromisoformat('2020-09-02T10:30')
+end = datetime.fromisoformat('2020-09-23T10:30')
 
 stats = gitstats.report(access_token,
                         group_name,
                         repository,
                         start=start,
-                        weeks=2)
+                        end=end)
+
 print(stats)
