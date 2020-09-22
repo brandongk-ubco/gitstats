@@ -5,6 +5,13 @@ from .StatsCalculator import StatsCalculator
 from .Reporter import Reporter
 from .Templater import Templater
 
+from pkg_resources import get_distribution, DistributionNotFound
+try:
+    __version__ = get_distribution(__name__).version
+except DistributionNotFound:
+    # package is not installed
+    pass
+
 
 def report(access_token, group_name, repository, start=None, end=None, weeks=1):
     connection = GithubConnection(access_token, repository)
