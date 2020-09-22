@@ -6,10 +6,10 @@ from .Reporter import Reporter
 from .Templater import Templater
 
 
-def report(access_token, group_name, repository, start=None, end=None):
+def report(access_token, group_name, repository, start=None, end=None, weeks=1):
     connection = GithubConnection(access_token, repository)
     repository = GithubAPIRepository(connection.get_repository())
-    collector = StatsCollector(repository, start=start, end=end)
+    collector = StatsCollector(repository, start=start, end=end, weeks=weeks)
     calculator = StatsCalculator(collector)
 
     templater = Templater()
