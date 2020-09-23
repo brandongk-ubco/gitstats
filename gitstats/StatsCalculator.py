@@ -184,20 +184,19 @@ class StatsCalculator:
         return issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
-        days = round(
-            (self.get_end() - self.get_start()).total_seconds() / 86400)
+        days = (self.get_end() - self.get_start()).total_seconds() / 86400
         if days == 0:
             return 0
-        return 2 * int(days / 7)
+        return 2 * days / 7
 
     def getTeamScore(self, users, issues):
-        expected_issues = self.getExpectedIssuesPerUser() * len(users)
+        expected_issues = int(self.getExpectedIssuesPerUser() * len(users))
         if expected_issues == 0:
             return 0.
-        return sum(issues["completed"]) / expected_issues
+        return min(sum(issues["completed"]) / expected_issues, 1.)
 
     def getFinalScores(self, effort, team_score):
         scores = pd.DataFrame()
         scores['user'] = effort['user']
-        scores["score"] = effort["effort"] * team_score
+        scores["score"] = round(effort["effort"] * team_score, 2)
         return scores

@@ -192,6 +192,16 @@ class TestStatsCalculator:
 
         assert expected_issues == 4
 
+    def test_expected_issues_five_days(self):
+        start = datetime.fromisoformat('2020-09-18T10:30')
+        end = datetime.fromisoformat('2020-09-23T10:30')
+
+        collector = MockStatsCollector(start=start, end=end)
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues - 1.42 < 0.01
+
     def test_team_score_one_user_one_issue_two_weeks(self):
         users = ["Bob"]
 
