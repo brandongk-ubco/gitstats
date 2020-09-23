@@ -5,6 +5,8 @@ from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
 from gitstats import StatsCalculator
 from datetime import datetime, timedelta
+from backports.datetime_fromisoformat import MonkeyPatch
+MonkeyPatch.patch_fromisoformat()
 
 
 class TestStatsCalculator:
