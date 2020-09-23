@@ -10,7 +10,7 @@ Since these branches are common, they should be **protected** - this ensures tha
 
 [**Video: Starting a New Repository** <br /> ![Starting a new Repository](./1.jpg) ](https://drive.google.com/file/d/1QKIMBj8Aewsvp3eHtc3ZxB2BZFQZwoao/view?usp=sharing "Starting a new Repository")
 
-## Pull Requests
+## Pull Requests (PRs)
 
 Merging to master / develop is always done via [pull requests](https://www.atlassian.com/git/tutorials/making-a-pull-request), which combine many commits / changes into a single, reviewable, atomic change.  The pull request should:
 - contain entire deliverable (feature or similar)

@@ -185,8 +185,6 @@ class StatsCalculator:
 
     def getExpectedIssuesPerUser(self):
         days = (self.get_end() - self.get_start()).total_seconds() / 86400
-        if days == 0:
-            return 0
         return 2 * days / 7
 
     def getTeamScore(self, users, issues):
