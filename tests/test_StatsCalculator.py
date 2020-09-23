@@ -172,6 +172,7 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         issues, excluded_issues = calculator.getIssues()
 
+        assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.25
 
@@ -180,7 +181,7 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         expected_issues = calculator.getExpectedIssuesPerUser()
 
-        assert expected_issues == 2
+        assert expected_issues - 2 < 0.01
 
     def test_expected_issues_two_weeks(self):
 
@@ -190,7 +191,7 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         expected_issues = calculator.getExpectedIssuesPerUser()
 
-        assert expected_issues == 4
+        assert expected_issues - 4 < 0.01
 
     def test_expected_issues_five_days(self):
         start = datetime.fromisoformat('2020-09-18T10:30')
@@ -213,8 +214,10 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         issues, excluded_issues = calculator.getIssues()
 
+        assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
+
         team_score = calculator.getTeamScore(users, issues)
-        assert team_score == 0.25
+        assert team_score - 0.25 < 0.01
 
     def test_team_score_two_users_one_issue_two_weeks(self):
         users = ["Bob", "Joan"]
@@ -227,8 +230,10 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         issues, excluded_issues = calculator.getIssues()
 
+        assert calculator.getExpectedIssuesPerUser() - 8 < 0.01
+
         team_score = calculator.getTeamScore(users, issues)
-        assert team_score == 0.125
+        assert team_score - 0.125 < 0.01
 
     def test_team_score_one_user_one_issue(self):
         users = ["Bob"]

@@ -190,7 +190,7 @@ class StatsCalculator:
         return 2 * days / 7
 
     def getTeamScore(self, users, issues):
-        expected_issues = int(self.getExpectedIssuesPerUser() * len(users))
+        expected_issues = self.getExpectedIssuesPerUser() * len(users)
         if expected_issues == 0:
             return 0.
         return min(sum(issues["completed"]) / expected_issues, 1.)
