@@ -1,5 +1,5 @@
 from gitstats.GithubAPIRepository import GithubAPIRepository
-from datetime import datetime, timezone, timedelta
+from datetime import datetime, timedelta
 import pytest
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue
 
@@ -20,7 +20,7 @@ class TestGithubAPIRepository:
     def test_no_prs(self):
         expected_prs = []
         finder = self._mock_pr_response(expected_prs)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 0
@@ -29,16 +29,26 @@ class TestGithubAPIRepository:
     def test_one_pr(self):
         expected_prs = [MockPR()]
         finder = self._mock_pr_response(expected_prs)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == len(expected_prs)
 
     @pytest.mark.findPRsByDateRange
+    def test_not_merged(self):
+        expected_prs = [MockPR()]
+        expected_prs[0].merged_at = None
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findPRsByDateRange
     def test_two_prs(self):
         expected_prs = [MockPR(), MockPR()]
         finder = self._mock_pr_response(expected_prs)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 2
@@ -47,10 +57,10 @@ class TestGithubAPIRepository:
     def test_prs_start_at_right_date(self):
         expected_prs = [
             MockPR(),
-            MockPR(updated_at=datetime.now(timezone.utc) - timedelta(days=10))
+            MockPR(updated_at=datetime.now() - timedelta(days=10))
         ]
         finder = self._mock_pr_response(expected_prs)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 1
@@ -58,12 +68,12 @@ class TestGithubAPIRepository:
     @pytest.mark.findPRsByDateRange
     def test_prs_skip_after_end_date(self):
         expected_prs = [
-            MockPR(updated_at=datetime.now(timezone.utc) + timedelta(days=1),
-                   closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
+            MockPR(updated_at=datetime.now() + timedelta(days=1),
+                   merged_at=datetime.now() + timedelta(days=1)),
             MockPR()
         ]
         finder = self._mock_pr_response(expected_prs)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 1
@@ -91,8 +101,9 @@ class TestGithubAPIRepository:
         commits = finder.getCommitsByPullRequestId(pr.number)
         assert len(commits) == len(expected_commits)
         for i in range(0, len(commits)):
-            assert abs(commits["date"][i].timestamp() -
-                       expected_commits[i].date.timestamp()) < 1
+            actual_date = commits["date"][i]
+            expected_date = expected_commits[i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
     @pytest.mark.getCommentsByPullRequestId
     def test_returns_comments(self):
@@ -109,7 +120,7 @@ class TestGithubAPIRepository:
     def test_no_issues(self):
         expected_issues = []
         finder = self._mock_issue_response(expected_issues)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findIssuesByDateRange(start, end)
         assert len(prs) == 0
@@ -118,7 +129,7 @@ class TestGithubAPIRepository:
     def test_one_issue(self):
         expected_issues = [MockIssue()]
         finder = self._mock_issue_response(expected_issues)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         issues = finder.findIssuesByDateRange(start, end)
         assert len(issues) == len(expected_issues)
@@ -127,7 +138,7 @@ class TestGithubAPIRepository:
     def test_two_issues(self):
         expected_issues = [MockIssue(), MockIssue()]
         finder = self._mock_issue_response(expected_issues)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         issues = finder.findIssuesByDateRange(start, end)
         assert len(issues) == 2
@@ -136,12 +147,11 @@ class TestGithubAPIRepository:
     def test_issues_start_at_right_date(self):
         expected_issues = [
             MockIssue(),
-            MockIssue(closed_at=datetime.now(timezone.utc) - timedelta(days=10),
-                      updated_at=datetime.now(timezone.utc) -
-                      timedelta(days=10))
+            MockIssue(closed_at=datetime.now() - timedelta(days=10),
+                      updated_at=datetime.now() - timedelta(days=10))
         ]
         finder = self._mock_issue_response(expected_issues)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         issues = finder.findIssuesByDateRange(start, end)
         assert len(issues) == 1
@@ -149,11 +159,11 @@ class TestGithubAPIRepository:
     @pytest.mark.findIssuesByDateRange
     def test_issues_skip_after_end_date(self):
         expected_issues = [
-            MockIssue(closed_at=datetime.now(timezone.utc) + timedelta(days=1)),
+            MockIssue(closed_at=datetime.now() + timedelta(days=1)),
             MockIssue()
         ]
         finder = self._mock_issue_response(expected_issues)
-        end = datetime.now(timezone.utc)
+        end = datetime.now()
         start = end - timedelta(days=7)
         issues = finder.findIssuesByDateRange(start, end)
         assert len(issues) == 1

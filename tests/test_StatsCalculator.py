@@ -4,6 +4,9 @@ from .fixtures import commits as commits_fixtures
 from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
 from gitstats import StatsCalculator
+from datetime import datetime, timedelta
+from backports.datetime_fromisoformat import MonkeyPatch
+MonkeyPatch.patch_fromisoformat()
 
 
 class TestStatsCalculator:
@@ -149,12 +152,13 @@ class TestStatsCalculator:
     def test_get_start(self):
         collector = MockStatsCollector()
         calculator = StatsCalculator(collector)
-        assert calculator.get_start() == collector.get_start()
+        assert calculator.get_start() - collector.get_start() < timedelta(
+            seconds=1)
 
     def test_get_end(self):
         collector = MockStatsCollector()
         calculator = StatsCalculator(collector)
-        assert calculator.get_end() == collector.get_end()
+        assert calculator.get_end() - collector.get_end() < timedelta(seconds=1)
 
     def test_issues(self):
         collector = MockStatsCollector(issues=issues_fixtures)
@@ -170,8 +174,68 @@ class TestStatsCalculator:
         calculator = StatsCalculator(collector)
         issues, excluded_issues = calculator.getIssues()
 
+        assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.25
+
+    def test_expected_issues_one_week(self):
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues - 2 < 0.01
+
+    def test_expected_issues_two_weeks(self):
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start, end=end)
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues - 4 < 0.01
+
+    def test_expected_issues_five_days(self):
+        start = datetime.fromisoformat('2020-09-18T10:30')
+        end = datetime.fromisoformat('2020-09-23T10:30')
+
+        collector = MockStatsCollector(start=start, end=end)
+        calculator = StatsCalculator(collector)
+        expected_issues = calculator.getExpectedIssuesPerUser()
+
+        assert expected_issues - 1.42 < 0.01
+
+    def test_team_score_one_user_one_issue_two_weeks(self):
+        users = ["Bob"]
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start,
+                                       end=end,
+                                       issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score - 0.25 < 0.01
+
+    def test_team_score_two_users_one_issue_two_weeks(self):
+        users = ["Bob", "Joan"]
+
+        end = datetime.now()
+        start = datetime.now() - timedelta(days=14)
+        collector = MockStatsCollector(start=start,
+                                       end=end,
+                                       issues=issues_fixtures)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        assert calculator.getExpectedIssuesPerUser() - 8 < 0.01
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score - 0.125 < 0.01
 
     def test_team_score_one_user_one_issue(self):
         users = ["Bob"]
@@ -182,3 +246,13 @@ class TestStatsCalculator:
 
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.50
+
+    def test_team_score_no_users(self):
+        users = []
+
+        collector = MockStatsCollector()
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 0.00
