@@ -15,7 +15,7 @@
 - Dependency inversion principle
     - One should "depend upon abstractions, [not] concretions."
 
-Together, these allow creating maintable software where you can substitute simple chunks of code (called mocks) to replace complex interfaces between code boundaries.  This is especially important when your code interfaces with external systems you have no control over, as you can simulate those systems and run tests quicklky and reliably.
+Together, these allow creating maintable software where you can substitute simple chunks of code (called mocks) to replace complex interfaces between code boundaries.  This is especially important when your code interfaces with external systems you have no control over, as you can simulate those systems and run tests quickly and reliably.
 
 [**Video: Implementing the First Feature** <br /> ![Video: Implementing the First Feature](./6.jpg) ](https://drive.google.com/file/d/1Gejl7be0UgtZZe8wL9J0IQM7weZ7RqTk/view?usp=sharing "Video: Implementing the First Feature")
 
