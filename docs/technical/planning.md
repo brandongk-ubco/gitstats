@@ -6,11 +6,11 @@ Based on the requirements for proper [estimation](./estimation.md), the sprint p
 
 1. Bring the project board up-to-date by moving any completed tasks and features to the "Done" column, if they are not already moved.  If any outstanding tasks or features are to be changed or killed, this should be discussed and decided as a team.
 
-1. Prioritize the top 10 outstanding features in your backlog.  If you have more than 10 features, the remaining can be unprioritized.  This priority should be motivated by client expectations.  Move the corresponding feature cards to the To do column.
+1. Ensure that the the top 10 outstanding features in your backlog are prioritized.  No more than 10 features can should be active on your [project dashboard](./dashboard.md) at one time (i.e. in the Backlog, In Progress, or To Do columns).  If you have more than 10 features, the remaining can be unprioritized.  This priority should be motivated by client expectations.  Move the corresponding feature cards to the Backlog column.
 
-1. Define the [acceptance criteria](https://www.softwaretestinghelp.com/user-story-acceptance-criteria/) for each of these 10 features.  This should be motivated by client expectations.  If it is unclear what the acceptance criteria is, log an *exploration* issue to clarify and assign it to a team member.
+1. Define the [acceptance criteria](https://www.softwaretestinghelp.com/user-story-acceptance-criteria/) for every feature in your Backlog.  This should be motivated by client expectations.  If it is unclear what the acceptance criteria is, log an *exploration* issue to clarify and assign it to a team member.  Once they are refined (acceptance criteria and validation techniques added to the issue) move the issue to the "To Do" column.
 
-1. Assign one feature to each team member, with top priority features being assigned first.  Do not assign a feature if its acceptance criteria is incomplete.  Move these assigned features to the "In Progress" column in the project board.  Each feature should be completed before assigning new features.
+1. Assign one feature to each team member, with top priority features being assigned first.  Do not assign a feature if its acceptance criteria or validation techniques are incomplete.  Move these assigned features to the "In Progress" column in the project board.  Each feature should be completed before assigning new features.
 
 1. Identify any questions that need to be answered for each feature assigned.  Questions identified here should be technical, like deciding on what tool to use for implementation or exploring how the system should be architected.  Each of these questions should be logged as a *exploration* in GitHub Issues.
 
