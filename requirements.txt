@@ -5,3 +5,4 @@ flake8
 yapf
 Jinja2
 pandas
+backports-datetime-fromisoformat
