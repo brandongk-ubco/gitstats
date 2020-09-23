@@ -50,6 +50,13 @@ class GithubAPIRepository:
                 ignore_index=True)
         return df
 
+    @staticmethod
+    def resolve_author(commit):
+        if commit.author is None:
+            return commit.commit.raw_data["author"]["name"]
+        else:
+            return commit.author.name if commit.author.name else commit.author.login
+
     def getCommitsByPullRequestId(self, id):
         pr = self.getById(id)
 
@@ -59,26 +66,19 @@ class GithubAPIRepository:
 
         commits = pr.get_commits()
         for commit in commits:
+
             date = datetime.strptime(
                 commit.raw_data["commit"]["author"]["date"],
                 "%Y-%m-%dT%H:%M:%SZ")
             df = df.append(
                 {
-                    "pr":
-                        int(pr.number),
-                    "user":
-                        commit.author.name
-                        if commit.author.name else commit.author.login,
-                    "date":
-                        date,
-                    "additions":
-                        commit.stats.additions,
-                    "deletions":
-                        commit.stats.deletions,
-                    "id":
-                        commit.sha,
-                    "changes":
-                        commit.stats.total
+                    "pr": int(pr.number),
+                    "user": GithubAPIRepository.resolve_author(commit),
+                    "date": date,
+                    "additions": commit.stats.additions,
+                    "deletions": commit.stats.deletions,
+                    "id": commit.sha,
+                    "changes": commit.stats.total
                 },
                 ignore_index=True)
 
