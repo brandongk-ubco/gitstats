@@ -1,4 +1,4 @@
-from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment
+from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockAuthor
 from random import randint
 from gitstats import StatsCollector, GithubAPIRepository
 from datetime import datetime, timedelta
@@ -58,3 +58,44 @@ class TestStatsCollector:
             len(e) for e in expected_issue_comments
         ]) + sum([len(e) for e in expected_review_comments])
         assert len(commits) == sum([len(e) for e in expected_commits])
+
+    def test_excludes_user(self):
+
+        users = ["Bob", "Jane", "TAJoe"]
+        excluded_users = ["TAJoe"]
+        expected_prs = []
+        for pr_assignee in users:
+            for commit_author in users:
+                for review_commenter in users:
+                    for issue_commenter in users:
+                        commit = MockCommit(author=MockAuthor(
+                            name=commit_author))
+                        review_comment = MockComment(user=MockAuthor(
+                            name=review_commenter))
+                        issue_comment = MockComment(user=MockAuthor(
+                            name=issue_commenter))
+
+                        pr = MockPR(commits=[commit],
+                                    reviews=[],
+                                    review_comments=[review_comment],
+                                    issue_comments=[issue_comment])
+                        expected_prs.append(pr)
+        repository = MockRepository(expected_prs)
+
+        api_repository = GithubAPIRepository(repository)
+
+        end = datetime.now() + timedelta(days=7)
+        start = datetime.now() - timedelta(days=7)
+
+        collector = StatsCollector(api_repository,
+                                   start=start,
+                                   end=end,
+                                   excluded_users=excluded_users)
+        prs = collector.getPRs()
+        reviews = collector.getReviews()
+        comments = collector.getComments()
+        commits = collector.getCommits()
+        assert len(prs) == 81
+        assert len(reviews) == 0
+        assert len(comments) == 108
+        assert len(commits) == 54

@@ -13,10 +13,13 @@ except DistributionNotFound:
     pass
 
 
-def report(access_token, group_name, repository, start, end):
+def report(access_token, group_name, repository, start, end, excluded_users=[]):
     connection = GithubConnection(access_token, repository)
     repository = GithubAPIRepository(connection.get_repository())
-    collector = StatsCollector(repository, start=start, end=end)
+    collector = StatsCollector(repository,
+                               start=start,
+                               end=end,
+                               excluded_users=excluded_users)
     calculator = StatsCalculator(collector)
 
     templater = Templater()
