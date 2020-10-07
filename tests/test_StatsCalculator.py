@@ -247,6 +247,70 @@ class TestStatsCalculator:
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.50
 
+    def test_team_score_one_user_three_issues(self):
+        users = ["Bob"]
+
+        mock_issues = issues_fixtures.copy(deep=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 20,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["chore"]
+            },
+            ignore_index=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 21,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["exploration"]
+            },
+            ignore_index=True)
+
+        collector = MockStatsCollector(issues=mock_issues)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 1.50
+
+    def test_team_score_one_user_four_issues(self):
+        users = ["Bob"]
+
+        mock_issues = issues_fixtures.copy(deep=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 20,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["chore"]
+            },
+            ignore_index=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 21,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["exploration"]
+            },
+            ignore_index=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 22,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["task"]
+            },
+            ignore_index=True)
+
+        collector = MockStatsCollector(issues=mock_issues)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        team_score = calculator.getTeamScore(users, issues)
+        assert team_score == 1.50
+
     def test_team_score_no_users(self):
         users = []
 
