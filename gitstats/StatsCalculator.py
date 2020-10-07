@@ -191,7 +191,7 @@ class StatsCalculator:
         expected_issues = self.getExpectedIssuesPerUser() * len(users)
         if expected_issues == 0:
             return 0.
-        return min(sum(issues["completed"]) / expected_issues, 1.)
+        return min(sum(issues["completed"]) / expected_issues, 1.5)
 
     def getFinalScores(self, effort, team_score):
         scores = pd.DataFrame()
