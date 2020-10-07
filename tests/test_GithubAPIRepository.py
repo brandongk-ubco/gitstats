@@ -37,7 +37,7 @@ class TestGithubAPIRepository:
     @pytest.mark.findPRsByDateRange
     def test_not_merged(self):
         expected_prs = [MockPR()]
-        expected_prs[0].merged_at = None
+        expected_prs[0].closed_at = None
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now()
         start = end - timedelta(days=7)
@@ -57,7 +57,7 @@ class TestGithubAPIRepository:
     def test_prs_start_at_right_date(self):
         expected_prs = [
             MockPR(),
-            MockPR(updated_at=datetime.now() - timedelta(days=10))
+            MockPR(closed_at=datetime.now() - timedelta(days=10))
         ]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now()
@@ -68,8 +68,7 @@ class TestGithubAPIRepository:
     @pytest.mark.findPRsByDateRange
     def test_prs_skip_after_end_date(self):
         expected_prs = [
-            MockPR(updated_at=datetime.now() + timedelta(days=1),
-                   merged_at=datetime.now() + timedelta(days=1)),
+            MockPR(closed_at=datetime.now() + timedelta(days=1)),
             MockPR()
         ]
         finder = self._mock_pr_response(expected_prs)
@@ -147,8 +146,7 @@ class TestGithubAPIRepository:
     def test_issues_start_at_right_date(self):
         expected_issues = [
             MockIssue(),
-            MockIssue(closed_at=datetime.now() - timedelta(days=10),
-                      updated_at=datetime.now() - timedelta(days=10))
+            MockIssue(closed_at=datetime.now() - timedelta(days=10))
         ]
         finder = self._mock_issue_response(expected_issues)
         end = datetime.now()

@@ -11,19 +11,19 @@ class GithubAPIRepository:
     def findPRsByDateRange(self, start, end):
         df = pd.DataFrame(columns=["id", "date", "assignee", "merged"])
         prs = self.repository.get_pulls(state="closed",
-                                        sort="merged",
+                                        sort="closed",
                                         direction="desc")
 
         for pr in prs:
-            if pr.merged_at is None or pr.merged_at > end:
+            if pr.closed_at is None or pr.closed_at > end:
                 continue
-            if pr.updated_at < start:
+            if pr.closed_at < start:
                 break
 
             df = df.append(
                 {
                     "id": pr.number,
-                    "date": pr.updated_at,
+                    "date": pr.closed_at,
                     "assignee": "" if pr.assignee is None else pr.assignee.name,
                     "merged": pr.merged
                 },
@@ -136,7 +136,7 @@ class GithubAPIRepository:
                                                 direction="desc"):
             if issue.closed_at > end:
                 continue
-            if issue.updated_at < start:
+            if issue.closed_at < start:
                 break
 
             try:

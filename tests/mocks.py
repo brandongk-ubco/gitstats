@@ -31,6 +31,7 @@ class MockPR:
     def __init__(self,
                  updated_at=None,
                  merged_at=None,
+                 closed_at=None,
                  assignee=None,
                  merged=False,
                  number=None,
@@ -41,6 +42,7 @@ class MockPR:
         self.updated_at = updated_at if updated_at is not None else datetime.now(
         )
         self.merged_at = merged_at if merged_at is not None else datetime.now()
+        self.closed_at = closed_at if closed_at is not None else datetime.now()
         self.assignee = assignee
         self.merged = merged
         self.number = number if number is not None else randint(1, 1e10)
