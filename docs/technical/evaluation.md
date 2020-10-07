@@ -42,7 +42,7 @@ Where
  - the numerator is a count of those completed
  - the denominator is the expected number to be completed, given as 2 times the number of team members.
 
- Note that you will not get a score more than one for completing more than the expected number of tasks.  It is better to work consistently to promote team sustainability.
+ Note that progress is capped at 150% for a single week.  It is better to work consistently to promote team sustainability.
 
  ## Final Weekly Score
 
@@ -51,5 +51,5 @@ The final weekly score will be assigned to each individual through a combination
 <img src="./score.png?raw=true" style="background:white;padding:10px;"/>
 
  Note that:
-  - progress is in [0,1], and is the same for all team members.
+  - progress is in [0,1.5], and is the same for all team members.
   - effort is in [0,1], and is not the same for all team members.
