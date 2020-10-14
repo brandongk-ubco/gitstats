@@ -15,7 +15,7 @@ setuptools.setup(
     long_description_content_type="text/markdown",
     url="https://github.com/brandongk-ubco/gitstats",
     packages=['gitstats'],
-    install_requires=['PyGithub', 'Jinja2', 'pandas'],
+    install_requires=['PyGithub', 'Jinja2', 'pandas', 'tzdata'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: GNU Affero General Public License v3 (AGPLv3)",
