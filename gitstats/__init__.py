@@ -4,6 +4,7 @@ from .GithubAPIRepository import GithubAPIRepository
 from .StatsCalculator import StatsCalculator
 from .Reporter import Reporter
 from .Templater import Templater
+from .TimeConverter import TimeConverter
 
 from pkg_resources import get_distribution, DistributionNotFound
 try:
@@ -14,6 +15,8 @@ except DistributionNotFound:
 
 
 def report(access_token, group_name, repository, start, end, excluded_users=[]):
+    start = TimeConverter.utc_to_pacific(start)
+    end = TimeConverter.utc_to_pacific(end)
     connection = GithubConnection(access_token, repository)
     repository = GithubAPIRepository(connection.get_repository())
     collector = StatsCollector(repository,
