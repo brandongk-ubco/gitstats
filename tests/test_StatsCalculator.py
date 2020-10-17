@@ -1,3 +1,5 @@
+import pandas as pd
+import pytest
 from .fixtures import prs as prs_fixtures
 from .fixtures import comments as comments_fixtures
 from .fixtures import commits as commits_fixtures
@@ -320,3 +322,43 @@ class TestStatsCalculator:
 
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.00
+
+    @pytest.mark.parametrize("test_more,test_input,expected", [
+        (5000, 1000, 83.35),
+        (5000, 500, 68.77),
+        (5000, 250, 50.78),
+        (5000, 100, 28.26),
+        (5000, 50, 16.15),
+        (5000, 0, 0),
+        (10000, 1000, 83.35),
+        (10000, 500, 68.77),
+        (10000, 250, 50.78),
+        (10000, 100, 28.26),
+        (10000, 50, 16.15),
+        (10000, 0, 0),
+    ])
+    def test_nonlinear_changes(self, test_more, test_input, expected):
+
+        contributions = pd.DataFrame.from_records([{
+            "user": "Bob",
+            "pr": 0,
+            "commits": 0,
+            "changes": test_more,
+            "comments": 0,
+            "contributed": True
+        }, {
+            "user": "Joan",
+            "pr": 0,
+            "commits": 0,
+            "changes": test_input,
+            "comments": 0,
+            "contributed": True
+        }])
+
+        effort = StatsCalculator(None).getEffortByUserFromContributions(
+            contributions)
+
+        assert abs(effort[effort["user"] == "Bob"]["changes"].iloc[0] -
+                   100) < 0.01
+        assert abs(effort[effort["user"] == "Joan"]["changes"].iloc[0] -
+                   expected) < 0.01
