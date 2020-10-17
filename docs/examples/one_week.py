@@ -2,7 +2,7 @@
 
 # Install with:
 # pip uninstall -y gitstats
-# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.0.5/gitstats-1.0.5-py3-none-any.whl
+# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.0.6/gitstats-1.0.6-py3-none-any.whl
 
 import gitstats
 from datetime import datetime
