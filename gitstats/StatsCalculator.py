@@ -138,6 +138,14 @@ class StatsCalculator:
             'comments': 'sum',
             'contributed': 'sum'
         }).reset_index()
+
+        aggregated["changes"] = aggregated["changes"].apply(
+            lambda x: min(x, 5000))
+
+        aggregated["changes"] = round(
+            1.571439 + (-0.01363552 - 1.557803) /
+            (1 + (aggregated["changes"] / 266.8213)**1.018625), 4)
+
         aggregated["contributed"] = aggregated["contributed"] / aggregated[
             "contributed"].max() * 100
         aggregated["commits"] = aggregated["commits"] / aggregated[
