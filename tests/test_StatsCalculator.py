@@ -249,6 +249,39 @@ class TestStatsCalculator:
         team_score = calculator.getTeamScore(users, issues)
         assert team_score == 0.50
 
+    def test_ignore_unrelated_issues(self):
+        users = ["Bob"]
+
+        mock_issues = issues_fixtures.copy(deep=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 20,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["otherthing", "chore"]
+            },
+            ignore_index=True)
+        mock_issues = mock_issues.append(
+            {
+                "number": 21,
+                "date": datetime.now(),
+                "assignee": "Bob",
+                "labels": ["feature", "task"]
+            },
+            ignore_index=True)
+
+        collector = MockStatsCollector(issues=mock_issues)
+        calculator = StatsCalculator(collector)
+        issues, excluded_issues = calculator.getIssues()
+
+        print(issues)
+        print(excluded_issues)
+
+        assert len(issues) == 2
+        assert len(excluded_issues) == 5
+        assert 20 not in excluded_issues["number"].to_list()
+        assert 21 in excluded_issues["number"].to_list()
+
     def test_team_score_one_user_three_issues(self):
         users = ["Bob"]
 
