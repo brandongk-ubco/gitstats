@@ -166,30 +166,42 @@ class StatsCalculator:
     def getIssues(self):
         issues = self.statsCollecter.getIssues()
 
-        issues["label_count"] = issues["labels"].apply(lambda l: len(l))
-        excluded_issues = issues[issues["label_count"] != 1]
-        issues = issues[issues["label_count"] == 1]
+        counted_issues = issues.copy()
+        excluded_issues = issues.copy()
 
-        excluded_issues = excluded_issues.append(issues[issues["labels"].apply(
-            lambda i: i[0] not in ["task", "exploration", "chore"])],
-                                                 ignore_index=True)
+        if len(issues) == 0:
+            return pd.DataFrame(columns=["label", "completed"]), issues
 
-        issues["label"] = issues["labels"].apply(lambda i: i[0])
+        counted_issues = counted_issues[counted_issues["labels"].apply(
+            lambda labels: "feature" not in labels)]
+
+        counted_issues["labels"] = counted_issues["labels"].apply(
+            lambda labels: [
+                label for label in labels
+                if label in ["task", "exploration", "chore"]
+            ])
+
+        counted_issues["label_count"] = counted_issues["labels"].apply(
+            lambda l: len(l))
+
+        counted_issues = counted_issues[counted_issues["label_count"] == 1]
+
+        counted_issues["label"] = counted_issues["labels"].apply(lambda i: i[0])
         issues = issues.drop('labels', 1)
 
-        issues = issues[issues["label"].apply(
-            lambda i: i in ["task", "exploration", "chore"])]
+        excluded_issues = excluded_issues[excluded_issues["number"].apply(
+            lambda x: x not in counted_issues["number"].to_list())]
 
-        if issues.empty:
-            issues = pd.DataFrame(columns=["label", "completed"])
+        if counted_issues.empty:
+            counted_issues = pd.DataFrame(columns=["label", "completed"])
         else:
-            issues = issues.groupby(['label']).agg({
+            counted_issues = counted_issues.groupby(['label']).agg({
                 'number': 'count'
             }).rename(columns={
                 'number': 'completed'
             }).reset_index().sort_values(by="label")
 
-        return issues, excluded_issues
+        return counted_issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
         days = (self.get_end() - self.get_start()).total_seconds() / 86400
