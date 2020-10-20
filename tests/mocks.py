@@ -69,11 +69,13 @@ class MockReview:
     def __init__(self,
                  id: int = None,
                  state: str = "submitted",
-                 submitted_at: datetime = None):
+                 submitted_at: datetime = None,
+                 user=None):
         self.id = id if id is not None else randint(1, 1e10)
         self.state = state
         self.submitted_at = submitted_at if submitted_at is not None else datetime.now(
         )
+        self.user = user if user is not None else MockAuthor()
 
 
 class MockAuthor:
