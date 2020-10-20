@@ -90,6 +90,24 @@ class GithubAPIRepository:
 
         df = pd.DataFrame(columns=["pr", "date", "user", "id", "type"])
 
+        reviews = pr.get_reviews()
+        for review in reviews:
+            df = df.append(
+                {
+                    "pr":
+                        int(pr.number),
+                    "date":
+                        review.submitted_at,
+                    "user":
+                        review.user.name
+                        if review.user.name else review.user.login,
+                    "id":
+                        review.id,
+                    "type":
+                        "review"
+                },
+                ignore_index=True)
+
         comments = pr.get_review_comments()
         for comment in comments:
             df = df.append(

@@ -54,9 +54,10 @@ class TestStatsCollector:
         commits = collector.getCommits()
         assert len(prs) == len(expected_prs)
         assert len(reviews) == sum([len(e) for e in expected_reviews])
-        assert len(comments) == sum([
-            len(e) for e in expected_issue_comments
-        ]) + sum([len(e) for e in expected_review_comments])
+        assert len(comments) == sum([len(e) for e in expected_issue_comments
+                                    ]) + sum([
+                                        len(e) for e in expected_review_comments
+                                    ]) + sum([len(e) for e in expected_reviews])
         assert len(commits) == sum([len(e) for e in expected_commits])
 
     def test_excludes_user(self):
