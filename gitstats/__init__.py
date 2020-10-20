@@ -5,6 +5,7 @@ from .StatsCalculator import StatsCalculator
 from .Reporter import Reporter
 from .Templater import Templater
 from .TimeConverter import TimeConverter
+from github import Github
 
 from pkg_resources import get_distribution, DistributionNotFound
 try:
@@ -14,7 +15,18 @@ except DistributionNotFound:
     pass
 
 
+def check_for_updates():
+    if __version__ == "alpha":
+        return
+    g = Github()
+    gitstats_repo = g.get_repo("brandongk-ubco/gitstats")
+    latest_tag = gitstats_repo.get_latest_release().tag_name
+    assert __version__ == latest_tag[
+        1:], "Newer version of gitstats %s found.  Please upgrade." % latest_tag
+
+
 def report(access_token, group_name, repository, start, end, excluded_users=[]):
+    check_for_updates()
     start = TimeConverter.utc_to_pacific(start)
     end = TimeConverter.utc_to_pacific(end)
     connection = GithubConnection(access_token, repository)
