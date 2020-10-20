@@ -195,13 +195,13 @@ class StatsCalculator:
         if counted_issues.empty:
             counted_issues = pd.DataFrame(columns=["label", "completed"])
         else:
-            issues = counted_issues.groupby(['label']).agg({
+            counted_issues = counted_issues.groupby(['label']).agg({
                 'number': 'count'
             }).rename(columns={
                 'number': 'completed'
             }).reset_index().sort_values(by="label")
 
-        return issues, excluded_issues
+        return counted_issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
         days = (self.get_end() - self.get_start()).total_seconds() / 86400
