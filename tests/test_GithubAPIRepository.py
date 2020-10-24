@@ -1,7 +1,7 @@
 from gitstats.GithubAPIRepository import GithubAPIRepository
 from datetime import datetime, timedelta
 import pytest
-from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue
+from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue, MockLabel
 
 
 class TestGithubAPIRepository:
@@ -70,6 +70,27 @@ class TestGithubAPIRepository:
         expected_prs = [
             MockPR(closed_at=datetime.now() + timedelta(days=1)),
             MockPR()
+        ]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 1
+
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr(self):
+        expected_prs = [MockPR(labels=[MockLabel("gitstats-ignore")])]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr_but_not_both(self):
+        expected_prs = [
+            MockPR(labels=[MockLabel("gitstats-ignore")]),
+            MockPR(MockLabel("do-not-ignore"))
         ]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now()
