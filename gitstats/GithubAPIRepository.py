@@ -67,6 +67,9 @@ class GithubAPIRepository:
         commits = pr.get_commits()
         for commit in commits:
 
+            if len(commit.parents) > 1:
+                continue
+
             date = datetime.strptime(
                 commit.raw_data["commit"]["author"]["date"],
                 "%Y-%m-%dT%H:%M:%SZ")
