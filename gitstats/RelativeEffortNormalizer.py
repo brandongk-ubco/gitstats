@@ -27,4 +27,5 @@ class RelativeEffortNormalizer:
                 "changes"] + 2 * contributions["comments"]
         contributions["effort"] = contributions["effort"] / contributions[
             "effort"].max() * 100
+        contributions["effort"] = contributions["effort"].fillna(0)
         return contributions
