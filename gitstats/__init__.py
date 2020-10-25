@@ -5,6 +5,7 @@ from .StatsCalculator import StatsCalculator
 from .Reporter import Reporter
 from .Templater import Templater
 from .TimeConverter import TimeConverter
+from .RelativeEffortNormalizer import RelativeEffortNormalizer
 from github import Github
 
 from pkg_resources import get_distribution, DistributionNotFound
@@ -31,6 +32,7 @@ def report(access_token, group_name, repository, start, end, excluded_users=[]):
     end = TimeConverter.utc_to_pacific(end)
     connection = GithubConnection(access_token, repository)
     repository = GithubAPIRepository(connection.get_repository())
+    normalizer = RelativeEffortNormalizer()
     collector = StatsCollector(repository,
                                start=start,
                                end=end,
@@ -39,6 +41,7 @@ def report(access_token, group_name, repository, start, end, excluded_users=[]):
 
     templater = Templater()
 
-    reporter = Reporter(group_name, templater.get_template(), calculator)
+    reporter = Reporter(group_name, templater.get_template(), calculator,
+                        normalizer)
 
     return reporter.report()

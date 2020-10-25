@@ -5,7 +5,7 @@ from .fixtures import comments as comments_fixtures
 from .fixtures import commits as commits_fixtures
 from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
-from gitstats import StatsCalculator
+from gitstats import StatsCalculator, RelativeEffortNormalizer
 from datetime import datetime, timedelta
 from backports.datetime_fromisoformat import MonkeyPatch
 MonkeyPatch.patch_fromisoformat()
@@ -24,6 +24,9 @@ class TestStatsCalculator:
         assert len(calculator.getCommitsByUser()) == 0
         assert len(calculator.getCommitsByUserAndPR()) == 0
         assert len(calculator.getContributionsByUserAndPR()) == 0
+        assert len(
+            calculator.getContributionsByUser(
+                calculator.getContributionsByUserAndPR())) == 0
 
     def test_prs_with_assignees(self):
 
@@ -57,6 +60,9 @@ class TestStatsCalculator:
         assert len(calculator.getCommentsByUserAndPR()) == 4
         assert len(calculator.getCommitsByUserAndPR()) == 4
         assert len(calculator.getContributionsByUserAndPR()) == 4
+        assert len(
+            calculator.getContributionsByUser(
+                calculator.getContributionsByUserAndPR())) == 2
 
     def test_prs_with_comments(self):
         collector = MockStatsCollector(prs=prs_fixtures,
@@ -80,6 +86,9 @@ class TestStatsCalculator:
         assert len(calculator.getCommentsByUserAndPR()) == 4
         assert len(calculator.getCommitsByUserAndPR()) == 4
         assert len(calculator.getContributionsByUserAndPR()) == 4
+        assert len(
+            calculator.getContributionsByUser(
+                calculator.getContributionsByUserAndPR())) == 2
 
     def test_prs_with_comments_and_commits(self):
         collector = MockStatsCollector(prs=prs_fixtures,
@@ -109,24 +118,28 @@ class TestStatsCalculator:
         assert len(calculator.getCommentsByUserAndPR()) == 4
         assert len(calculator.getCommitsByUserAndPR()) == 4
 
-        ContributionsByUserAndPR = calculator.getContributionsByUserAndPR()
-        assert len(ContributionsByUserAndPR) == 4
-        bob_0 = ContributionsByUserAndPR[
-            (ContributionsByUserAndPR["user"] == "Bob") &
-            (ContributionsByUserAndPR["pr"] == 0)]
-        bob_1 = ContributionsByUserAndPR[
-            (ContributionsByUserAndPR["user"] == "Bob") &
-            (ContributionsByUserAndPR["pr"] == 1)]
-        joan_0 = ContributionsByUserAndPR[
-            (ContributionsByUserAndPR["user"] == "Joan") &
-            (ContributionsByUserAndPR["pr"] == 0)]
-        joan_1 = ContributionsByUserAndPR[
-            (ContributionsByUserAndPR["user"] == "Joan") &
-            (ContributionsByUserAndPR["pr"] == 1)]
+        contributionsByUserAndPR = calculator.getContributionsByUserAndPR()
+        assert len(contributionsByUserAndPR) == 4
+        bob_0 = contributionsByUserAndPR[
+            (contributionsByUserAndPR["user"] == "Bob") &
+            (contributionsByUserAndPR["pr"] == 0)]
+        bob_1 = contributionsByUserAndPR[
+            (contributionsByUserAndPR["user"] == "Bob") &
+            (contributionsByUserAndPR["pr"] == 1)]
+        joan_0 = contributionsByUserAndPR[
+            (contributionsByUserAndPR["user"] == "Joan") &
+            (contributionsByUserAndPR["pr"] == 0)]
+        joan_1 = contributionsByUserAndPR[
+            (contributionsByUserAndPR["user"] == "Joan") &
+            (contributionsByUserAndPR["pr"] == 1)]
         assert bob_0["contributed"].iloc[0]
         assert not bob_1["contributed"].iloc[0]
         assert not joan_0["contributed"].iloc[0]
         assert not joan_1["contributed"].iloc[0]
+
+        contributionsByUser = calculator.getContributionsByUser(
+            contributionsByUserAndPR)
+        assert len(contributionsByUser) == 2
 
     def test_effort_with_comments_and_commits(self):
         collector = MockStatsCollector(prs=prs_fixtures,
@@ -134,9 +147,11 @@ class TestStatsCalculator:
                                        commits=commits_fixtures)
         calculator = StatsCalculator(collector)
 
-        contributions = calculator.getContributionsByUserAndPR()
+        contributionsByUserAndPR = calculator.getContributionsByUserAndPR()
+        contributionsByUser = calculator.getContributionsByUser(
+            contributionsByUserAndPR)
 
-        effort = calculator.getEffortByUserFromContributions(contributions)
+        effort = RelativeEffortNormalizer().normalize(contributionsByUser)
         assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
         assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
 
@@ -145,9 +160,11 @@ class TestStatsCalculator:
                                        comments=comments_fixtures)
         calculator = StatsCalculator(collector)
 
-        contributions = calculator.getContributionsByUserAndPR()
+        contributionsByUserAndPR = calculator.getContributionsByUserAndPR()
+        contributions = calculator.getContributionsByUser(
+            contributionsByUserAndPR)
 
-        effort = calculator.getEffortByUserFromContributions(contributions)
+        effort = RelativeEffortNormalizer().normalize(contributions)
         assert effort[effort["user"] == "Bob"]["effort"].iloc[0] == 100.0
         assert effort[effort["user"] == "Joan"]["effort"].iloc[0] == 0.0
 
@@ -250,8 +267,6 @@ class TestStatsCalculator:
         assert team_score == 0.50
 
     def test_ignore_unrelated_issues(self):
-        users = ["Bob"]
-
         mock_issues = issues_fixtures.copy(deep=True)
         mock_issues = mock_issues.append(
             {
@@ -273,9 +288,6 @@ class TestStatsCalculator:
         collector = MockStatsCollector(issues=mock_issues)
         calculator = StatsCalculator(collector)
         issues, excluded_issues = calculator.getIssues()
-
-        print(issues)
-        print(excluded_issues)
 
         assert len(issues) == 2
         assert len(excluded_issues) == 5
@@ -372,7 +384,7 @@ class TestStatsCalculator:
     ])
     def test_nonlinear_changes(self, test_more, test_input, expected):
 
-        contributions = pd.DataFrame.from_records([{
+        contributionsByUserAndPR = pd.DataFrame.from_records([{
             "user": "Bob",
             "pr": 0,
             "commits": 0,
@@ -388,8 +400,10 @@ class TestStatsCalculator:
             "contributed": True
         }])
 
-        effort = StatsCalculator(None).getEffortByUserFromContributions(
-            contributions)
+        contributionsByUser = StatsCalculator(None).getContributionsByUser(
+            contributionsByUserAndPR)
+
+        effort = RelativeEffortNormalizer().normalize(contributionsByUser)
 
         assert abs(effort[effort["user"] == "Bob"]["changes"].iloc[0] -
                    100) < 0.01

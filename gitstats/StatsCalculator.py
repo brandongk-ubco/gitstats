@@ -131,37 +131,13 @@ class StatsCalculator:
 
         return aggregated
 
-    def getEffortByUserFromContributions(self, contributions):
-        aggregated = contributions.groupby(['user']).agg({
+    def getContributionsByUser(self, contributionsByUserAndPR):
+        return contributionsByUserAndPR.groupby(['user']).agg({
             'commits': 'sum',
             'changes': 'sum',
             'comments': 'sum',
             'contributed': 'sum'
         }).reset_index()
-
-        aggregated["changes"] = aggregated["changes"].apply(
-            lambda x: min(x, 5000))
-
-        aggregated["changes"] = round(
-            1.571439 + (-0.01363552 - 1.557803) /
-            (1 + (aggregated["changes"] / 266.8213)**1.018625), 4)
-
-        aggregated["contributed"] = aggregated["contributed"] / aggregated[
-            "contributed"].max() * 100
-        aggregated["commits"] = aggregated["commits"] / aggregated[
-            "commits"].max() * 100
-        aggregated["changes"] = aggregated["changes"] / aggregated[
-            "changes"].max() * 100
-        aggregated["comments"] = aggregated["comments"] / aggregated[
-            "comments"].max() * 100
-
-        aggregated = aggregated.fillna(0.0)
-
-        aggregated["effort"] = 5 * aggregated["contributed"] + 5 * aggregated[
-            "commits"] + 3 * aggregated["changes"] + 2 * aggregated["comments"]
-        aggregated["effort"] = aggregated["effort"] / aggregated["effort"].max(
-        ) * 100
-        return aggregated
 
     def getIssues(self):
         issues = self.statsCollecter.getIssues()

@@ -173,13 +173,19 @@ class MockStatsCollector:
         return self.users
 
 
+class MockNormalizer:
+
+    def normalize(self, contributions):
+        return "effort"
+
+
 class MockStatsCalculator:
 
     def getContributionsByUserAndPR(self):
-        return "contributions"
+        return "contributionsByUserAndPR"
 
-    def getEffortByUserFromContributions(self, contribuntions):
-        return "effort"
+    def getContributionsByUser(self, contributions):
+        return "contributionsByUser"
 
     def get_start(self):
         return "start"
