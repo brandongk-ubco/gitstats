@@ -27,15 +27,27 @@ goodGina = make_record("GoodGina",
                        commits=5,
                        comments=20,
                        contributed=10)
+goodGeorge = make_record("GoodGeorge",
+                         changes=500,
+                         commits=2,
+                         comments=5,
+                         contributed=5)
 slackerSam = make_record("SlackerSam",
                          changes=50,
                          commits=1,
                          comments=2,
                          contributed=2)
+loneWolfLarry = make_record("LoneWolfLarry",
+                            changes=1000,
+                            commits=10,
+                            comments=5,
+                            contributed=1)
 
 scenarios = [[weekOffWally], [slackerSam], [goodGina], [heroHolly],
              [weekOffWally, heroHolly], [goodGina, heroHolly],
-             [goodGina, heroHolly], [slackerSam, goodGina],
-             [slackerSam, goodGina, heroHolly], [heroHenry, heroHolly]]
+             [goodGina, heroHolly], [goodGeorge, heroHolly],
+             [slackerSam, goodGina], [goodGeorge, goodGina],
+             [slackerSam, goodGina, heroHolly], [heroHenry, heroHolly],
+             [heroHenry, heroHolly, loneWolfLarry]]
 
 scenarios = [pd.DataFrame.from_records(i) for i in scenarios]
