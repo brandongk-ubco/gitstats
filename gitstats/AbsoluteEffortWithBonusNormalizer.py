@@ -34,11 +34,22 @@ class AbsoluteEffortWithBonusNormalizer:
             "contributed"] / self.expected_prs * 100
 
         contributions["changes"] = contributions["changes"].apply(
+            lambda x: self.piecewiseLinearBonus(x))
+        contributions["changes"] = contributions["changes"].apply(
             lambda x: min(x, self.maximum))
+
+        contributions["commits"] = contributions["commits"].apply(
+            lambda x: self.piecewiseLinearBonus(x))
         contributions["commits"] = contributions["commits"].apply(
             lambda x: min(x, self.maximum))
+
+        contributions["comments"] = contributions["comments"].apply(
+            lambda x: self.piecewiseLinearBonus(x))
         contributions["comments"] = contributions["comments"].apply(
             lambda x: min(x, self.maximum))
+
+        contributions["contributed"] = contributions["contributed"].apply(
+            lambda x: self.piecewiseLinearBonus(x))
         contributions["contributed"] = contributions["contributed"].apply(
             lambda x: min(x, self.maximum))
 
@@ -49,10 +60,5 @@ class AbsoluteEffortWithBonusNormalizer:
                 "changes"] + 2 * contributions["comments"]
 
         contributions["effort"] = round(contributions["effort"] / 15, 2)
-        contributions["effort"] = contributions["effort"].apply(
-            lambda x: self.piecewiseLinearBonus(x))
-
-        contributions["effort"] = contributions["effort"].apply(
-            lambda x: min(x, self.maximum))
 
         return contributions

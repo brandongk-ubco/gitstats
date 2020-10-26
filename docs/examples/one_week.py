@@ -9,7 +9,7 @@ from datetime import datetime
 
 print("Running with gitstats version: {}".format(gitstats.__version__))
 
-access_token = "7125bcf7fa36bfb0d07069fb2e2599c5daf9b0d2"
+access_token = "4c0e8448198305c44d553f71bda03404bffc9be1"
 repository = "brandongk-ubco/gitstats"
 group_name = "gitstats"
 
