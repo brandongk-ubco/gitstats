@@ -3,8 +3,9 @@ import pandas as pd
 
 class StatsCalculator:
 
-    def __init__(self, statsCollector):
+    def __init__(self, statsCollector, report_weeks):
         self.statsCollecter = statsCollector
+        self.report_weeks = report_weeks
 
     def get_start(self):
         return self.statsCollecter.get_start()
@@ -180,14 +181,13 @@ class StatsCalculator:
         return counted_issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
-        days = (self.get_end() - self.get_start()).total_seconds() / 86400
-        return 2 * days / 7
+        return 2 * self.report_weeks
 
     def getTeamScore(self, users, issues):
         expected_issues = self.getExpectedIssuesPerUser() * len(users)
         if expected_issues == 0:
             return 0.
-        return min(sum(issues["completed"]) / expected_issues, 1.5)
+        return min(sum(issues["completed"]) / expected_issues, 1)
 
     def getFinalScores(self, effort, team_score):
         scores = pd.DataFrame()

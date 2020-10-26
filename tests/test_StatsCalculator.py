@@ -5,7 +5,7 @@ from .fixtures import comments as comments_fixtures
 from .fixtures import commits as commits_fixtures
 from .fixtures import issues as issues_fixtures
 from .mocks import MockStatsCollector
-from gitstats import StatsCalculator, RelativeEffortNormalizer
+from gitstats import StatsCalculator, RelativeEffortNormalizer, getReportWeeks
 from datetime import datetime, timedelta
 from backports.datetime_fromisoformat import MonkeyPatch
 MonkeyPatch.patch_fromisoformat()
@@ -15,7 +15,7 @@ class TestStatsCalculator:
 
     def test_all_empty(self):
         collector = MockStatsCollector()
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         assert len(calculator.getUsers()) == 0
         assert len(calculator.getPRsByAssignee()) == 0
@@ -31,7 +31,7 @@ class TestStatsCalculator:
     def test_prs_with_assignees(self):
 
         collector = MockStatsCollector(prs=prs_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         PRsByAssignee = calculator.getPRsByAssignee()
         assert len(calculator.getUsers()) == 2
@@ -67,7 +67,7 @@ class TestStatsCalculator:
     def test_prs_with_comments(self):
         collector = MockStatsCollector(prs=prs_fixtures,
                                        comments=comments_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         PRsByAssignee = calculator.getPRsByAssignee()
         assert len(PRsByAssignee) == 2
@@ -94,7 +94,7 @@ class TestStatsCalculator:
         collector = MockStatsCollector(prs=prs_fixtures,
                                        comments=comments_fixtures,
                                        commits=commits_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         PRsByAssignee = calculator.getPRsByAssignee()
         assert len(PRsByAssignee) == 2
@@ -145,7 +145,7 @@ class TestStatsCalculator:
         collector = MockStatsCollector(prs=prs_fixtures,
                                        comments=comments_fixtures,
                                        commits=commits_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         contributionsByUserAndPR = calculator.getContributionsByUserAndPR()
         contributionsByUser = calculator.getContributionsByUser(
@@ -158,7 +158,7 @@ class TestStatsCalculator:
     def test_effort_with_only_comments(self):
         collector = MockStatsCollector(prs=prs_fixtures,
                                        comments=comments_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
 
         contributionsByUserAndPR = calculator.getContributionsByUserAndPR()
         contributions = calculator.getContributionsByUser(
@@ -170,18 +170,18 @@ class TestStatsCalculator:
 
     def test_get_start(self):
         collector = MockStatsCollector()
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         assert calculator.get_start() - collector.get_start() < timedelta(
             seconds=1)
 
     def test_get_end(self):
         collector = MockStatsCollector()
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         assert calculator.get_end() - collector.get_end() < timedelta(seconds=1)
 
     def test_issues(self):
         collector = MockStatsCollector(issues=issues_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
         assert len(issues) == 1
         assert len(excluded_issues) == 4
@@ -190,7 +190,7 @@ class TestStatsCalculator:
         users = ["Bob", "Joan"]
 
         collector = MockStatsCollector(issues=issues_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
@@ -199,7 +199,7 @@ class TestStatsCalculator:
 
     def test_expected_issues_one_week(self):
         collector = MockStatsCollector()
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         expected_issues = calculator.getExpectedIssuesPerUser()
 
         assert expected_issues - 2 < 0.01
@@ -209,7 +209,8 @@ class TestStatsCalculator:
         end = datetime.now()
         start = datetime.now() - timedelta(days=14)
         collector = MockStatsCollector(start=start, end=end)
-        calculator = StatsCalculator(collector)
+        report_weeks = getReportWeeks(start, end)
+        calculator = StatsCalculator(collector, report_weeks=report_weeks)
         expected_issues = calculator.getExpectedIssuesPerUser()
 
         assert expected_issues - 4 < 0.01
@@ -217,9 +218,9 @@ class TestStatsCalculator:
     def test_expected_issues_five_days(self):
         start = datetime.fromisoformat('2020-09-18T10:30')
         end = datetime.fromisoformat('2020-09-23T10:30')
-
+        report_weeks = getReportWeeks(start, end)
         collector = MockStatsCollector(start=start, end=end)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=report_weeks)
         expected_issues = calculator.getExpectedIssuesPerUser()
 
         assert expected_issues - 1.42 < 0.01
@@ -229,10 +230,11 @@ class TestStatsCalculator:
 
         end = datetime.now()
         start = datetime.now() - timedelta(days=14)
+        report_weeks = getReportWeeks(start, end)
         collector = MockStatsCollector(start=start,
                                        end=end,
                                        issues=issues_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=report_weeks)
         issues, excluded_issues = calculator.getIssues()
 
         assert calculator.getExpectedIssuesPerUser() - 4 < 0.01
@@ -245,10 +247,11 @@ class TestStatsCalculator:
 
         end = datetime.now()
         start = datetime.now() - timedelta(days=14)
+        report_weeks = getReportWeeks(start, end)
         collector = MockStatsCollector(start=start,
                                        end=end,
                                        issues=issues_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=report_weeks)
         issues, excluded_issues = calculator.getIssues()
 
         assert calculator.getExpectedIssuesPerUser() - 8 < 0.01
@@ -260,7 +263,7 @@ class TestStatsCalculator:
         users = ["Bob"]
 
         collector = MockStatsCollector(issues=issues_fixtures)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         team_score = calculator.getTeamScore(users, issues)
@@ -286,7 +289,7 @@ class TestStatsCalculator:
             ignore_index=True)
 
         collector = MockStatsCollector(issues=mock_issues)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         assert len(issues) == 2
@@ -316,11 +319,11 @@ class TestStatsCalculator:
             ignore_index=True)
 
         collector = MockStatsCollector(issues=mock_issues)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         team_score = calculator.getTeamScore(users, issues)
-        assert team_score == 1.50
+        assert team_score == 1.00
 
     def test_team_score_one_user_four_issues(self):
         users = ["Bob"]
@@ -352,17 +355,17 @@ class TestStatsCalculator:
             ignore_index=True)
 
         collector = MockStatsCollector(issues=mock_issues)
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         team_score = calculator.getTeamScore(users, issues)
-        assert team_score == 1.50
+        assert team_score == 1.00
 
     def test_team_score_no_users(self):
         users = []
 
         collector = MockStatsCollector()
-        calculator = StatsCalculator(collector)
+        calculator = StatsCalculator(collector, report_weeks=1)
         issues, excluded_issues = calculator.getIssues()
 
         team_score = calculator.getTeamScore(users, issues)
@@ -400,8 +403,9 @@ class TestStatsCalculator:
             "contributed": True
         }])
 
-        contributionsByUser = StatsCalculator(None).getContributionsByUser(
-            contributionsByUserAndPR)
+        contributionsByUser = StatsCalculator(
+            None,
+            report_weeks=1).getContributionsByUser(contributionsByUserAndPR)
 
         effort = RelativeEffortNormalizer().normalize(contributionsByUser)
 
