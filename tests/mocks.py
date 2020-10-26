@@ -38,7 +38,8 @@ class MockPR:
                  reviews=[],
                  commits=[],
                  issue_comments=[],
-                 review_comments=[]):
+                 review_comments=[],
+                 labels=[]):
         self.updated_at = updated_at if updated_at is not None else datetime.now(
         )
         self.merged_at = merged_at if merged_at is not None else datetime.now()
@@ -50,6 +51,7 @@ class MockPR:
         self.commits = commits
         self.issue_comments = issue_comments
         self.review_comments = review_comments
+        self.labels = labels
 
     def get_reviews(self):
         return self.reviews
@@ -228,3 +230,9 @@ class MockIssue:
         self.number = number if number is not None else randint(1, 1e10)
         self.labels = labels
         self.state = state
+
+
+class MockLabel:
+
+    def __init__(self, name):
+        self.name = name
