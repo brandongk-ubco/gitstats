@@ -45,9 +45,8 @@ loneWolfLarry = make_record("LoneWolfLarry",
 
 scenarios = [[weekOffWally], [slackerSam], [goodGina], [heroHolly],
              [weekOffWally, heroHolly], [goodGina, heroHolly],
-             [goodGina, heroHolly], [goodGeorge, heroHolly],
-             [slackerSam, goodGina], [goodGeorge, goodGina],
-             [slackerSam, goodGina, heroHolly], [heroHenry, heroHolly],
-             [heroHenry, heroHolly, loneWolfLarry]]
+             [goodGeorge, heroHolly], [slackerSam, goodGina],
+             [goodGeorge, goodGina], [slackerSam, goodGina, heroHolly],
+             [heroHenry, heroHolly], [heroHenry, heroHolly, loneWolfLarry]]
 
 scenarios = [pd.DataFrame.from_records(i) for i in scenarios]

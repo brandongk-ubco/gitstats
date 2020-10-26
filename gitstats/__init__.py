@@ -6,6 +6,8 @@ from .Reporter import Reporter
 from .Templater import Templater
 from .TimeConverter import TimeConverter
 from .RelativeEffortNormalizer import RelativeEffortNormalizer
+from .AbsoluteEffortNormalizer import AbsoluteEffortNormalizer
+from .AbsoluteEffortWithBonusNormalizer import AbsoluteEffortWithBonusNormalizer
 from github import Github
 
 from pkg_resources import get_distribution, DistributionNotFound

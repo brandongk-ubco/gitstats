@@ -1,4 +1,4 @@
-from gitstats import RelativeEffortNormalizer, Templater
+from gitstats import RelativeEffortNormalizer, AbsoluteEffortNormalizer, AbsoluteEffortWithBonusNormalizer, Templater
 import pytest
 from .scenarios import scenarios
 import os
@@ -6,9 +6,15 @@ import os
 
 class TestScenarios:
 
-    @pytest.mark.parametrize(
-        "normalizer,normalizer_name,scenarios",
-        [(RelativeEffortNormalizer(), "Relative Effort", scenarios)])
+    @pytest.mark.parametrize("normalizer,normalizer_name,scenarios", [
+        (RelativeEffortNormalizer(), "Relative Effort", scenarios),
+        (AbsoluteEffortNormalizer(
+            expected_commits=4, expected_changes=200,
+            expected_tasks_per_user=2), "Absolute Effort", scenarios),
+        (AbsoluteEffortWithBonusNormalizer(
+            expected_commits=4, expected_changes=200,
+            expected_tasks_per_user=2), "Absolute Effort With Bonus", scenarios)
+    ])
     def test(self, normalizer, normalizer_name, scenarios):
 
         template = Templater(template_name="scenario.j2",
