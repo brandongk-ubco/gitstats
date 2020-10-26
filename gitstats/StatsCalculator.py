@@ -3,8 +3,9 @@ import pandas as pd
 
 class StatsCalculator:
 
-    def __init__(self, statsCollector):
+    def __init__(self, statsCollector, report_weeks):
         self.statsCollecter = statsCollector
+        self.report_weeks = report_weeks
 
     def get_start(self):
         return self.statsCollecter.get_start()
@@ -131,37 +132,13 @@ class StatsCalculator:
 
         return aggregated
 
-    def getEffortByUserFromContributions(self, contributions):
-        aggregated = contributions.groupby(['user']).agg({
+    def getContributionsByUser(self, contributionsByUserAndPR):
+        return contributionsByUserAndPR.groupby(['user']).agg({
             'commits': 'sum',
             'changes': 'sum',
             'comments': 'sum',
             'contributed': 'sum'
         }).reset_index()
-
-        aggregated["changes"] = aggregated["changes"].apply(
-            lambda x: min(x, 5000))
-
-        aggregated["changes"] = round(
-            1.571439 + (-0.01363552 - 1.557803) /
-            (1 + (aggregated["changes"] / 266.8213)**1.018625), 4)
-
-        aggregated["contributed"] = aggregated["contributed"] / aggregated[
-            "contributed"].max() * 100
-        aggregated["commits"] = aggregated["commits"] / aggregated[
-            "commits"].max() * 100
-        aggregated["changes"] = aggregated["changes"] / aggregated[
-            "changes"].max() * 100
-        aggregated["comments"] = aggregated["comments"] / aggregated[
-            "comments"].max() * 100
-
-        aggregated = aggregated.fillna(0.0)
-
-        aggregated["effort"] = 5 * aggregated["contributed"] + 5 * aggregated[
-            "commits"] + 3 * aggregated["changes"] + 2 * aggregated["comments"]
-        aggregated["effort"] = aggregated["effort"] / aggregated["effort"].max(
-        ) * 100
-        return aggregated
 
     def getIssues(self):
         issues = self.statsCollecter.getIssues()
@@ -204,14 +181,13 @@ class StatsCalculator:
         return counted_issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
-        days = (self.get_end() - self.get_start()).total_seconds() / 86400
-        return 2 * days / 7
+        return 2 * self.report_weeks
 
     def getTeamScore(self, users, issues):
         expected_issues = self.getExpectedIssuesPerUser() * len(users)
         if expected_issues == 0:
             return 0.
-        return min(sum(issues["completed"]) / expected_issues, 1.5)
+        return min(sum(issues["completed"]) / expected_issues, 1)
 
     def getFinalScores(self, effort, team_score):
         scores = pd.DataFrame()

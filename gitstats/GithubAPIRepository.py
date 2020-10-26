@@ -15,6 +15,11 @@ class GithubAPIRepository:
                                         direction="desc")
 
         for pr in prs:
+            labels = [str(i.name).lower().strip() for i in pr.labels]
+
+            if "gitstats-ignore" in labels:
+                continue
+
             if pr.closed_at is None or pr.closed_at > end:
                 continue
             if pr.closed_at < start:
@@ -66,6 +71,9 @@ class GithubAPIRepository:
 
         commits = pr.get_commits()
         for commit in commits:
+
+            if len(commit.parents) > 1:
+                continue
 
             date = datetime.strptime(
                 commit.raw_data["commit"]["author"]["date"],
