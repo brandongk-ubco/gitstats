@@ -98,11 +98,17 @@ class MockStats:
 
 class MockCommit:
 
-    def __init__(self, author=None, date=None, stats=None, sha=None):
+    def __init__(self,
+                 author=None,
+                 date=None,
+                 stats=None,
+                 sha=None,
+                 parents=None):
         self.author = author if author is not None else MockAuthor()
         self.stats = stats if stats is not None else MockStats()
         self.sha = sha if sha is not None else uuid.uuid4().hex
         self.date = date if date is not None else datetime.now()
+        self.parents = parents if parents is not None else []
         self.raw_data = {
             "commit": {
                 "author": {

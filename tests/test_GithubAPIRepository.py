@@ -125,6 +125,21 @@ class TestGithubAPIRepository:
             expected_date = expected_commits[i].date
             assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
+    @pytest.mark.getCommitsByPullRequestId
+    def test_ignores_merge_commits(self):
+        commit_1 = MockCommit()
+        commit_2 = MockCommit()
+        merge_commit = MockCommit(parents=[commit_1, commit_2])
+        expected_commits = [commit_1, commit_2, merge_commit]
+        pr = MockPR(commits=expected_commits)
+        finder = self._mock_pr_response([pr])
+        commits = finder.getCommitsByPullRequestId(pr.number)
+        assert len(commits) == 2
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits[i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
+
     @pytest.mark.getCommentsByPullRequestId
     def test_returns_comments(self):
         expected_review_comments = [MockComment(), MockComment()]
