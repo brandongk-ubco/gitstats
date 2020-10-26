@@ -33,6 +33,15 @@ class AbsoluteEffortWithBonusNormalizer:
         contributions["contributed"] = contributions[
             "contributed"] / self.expected_prs * 100
 
+        contributions["changes"] = contributions["changes"].apply(
+            lambda x: min(x, self.maximum))
+        contributions["commits"] = contributions["commits"].apply(
+            lambda x: min(x, self.maximum))
+        contributions["comments"] = contributions["comments"].apply(
+            lambda x: min(x, self.maximum))
+        contributions["contributed"] = contributions["contributed"].apply(
+            lambda x: min(x, self.maximum))
+
         contributions = contributions.fillna(0.0)
 
         contributions["effort"] = 5 * contributions[
