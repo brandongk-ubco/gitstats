@@ -1,7 +1,7 @@
 from gitstats.GithubAPIRepository import GithubAPIRepository
 from datetime import datetime, timedelta
 import pytest
-from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue
+from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue, MockLabel
 
 
 class TestGithubAPIRepository:
@@ -77,6 +77,27 @@ class TestGithubAPIRepository:
         prs = finder.findPRsByDateRange(start, end)
         assert len(prs) == 1
 
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr(self):
+        expected_prs = [MockPR(labels=[MockLabel("gitstats-ignore")])]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr_but_not_both(self):
+        expected_prs = [
+            MockPR(labels=[MockLabel("gitstats-ignore")]),
+            MockPR(MockLabel("do-not-ignore"))
+        ]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 1
+
     @pytest.mark.getById
     def test_returns_get_pull_response(self):
         expected_prs = [MockPR()]
@@ -99,6 +120,21 @@ class TestGithubAPIRepository:
         finder = self._mock_pr_response([pr])
         commits = finder.getCommitsByPullRequestId(pr.number)
         assert len(commits) == len(expected_commits)
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits[i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
+
+    @pytest.mark.getCommitsByPullRequestId
+    def test_ignores_merge_commits(self):
+        commit_1 = MockCommit()
+        commit_2 = MockCommit()
+        merge_commit = MockCommit(parents=[commit_1, commit_2])
+        expected_commits = [commit_1, commit_2, merge_commit]
+        pr = MockPR(commits=expected_commits)
+        finder = self._mock_pr_response([pr])
+        commits = finder.getCommitsByPullRequestId(pr.number)
+        assert len(commits) == 2
         for i in range(0, len(commits)):
             actual_date = commits["date"][i]
             expected_date = expected_commits[i].date
