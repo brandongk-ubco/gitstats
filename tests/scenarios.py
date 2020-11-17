@@ -47,6 +47,10 @@ scenarios = [[weekOffWally], [slackerSam], [goodGina], [heroHolly],
              [weekOffWally, heroHolly], [goodGina, heroHolly],
              [goodGeorge, heroHolly], [slackerSam, goodGina],
              [goodGeorge, goodGina], [slackerSam, goodGina, heroHolly],
-             [heroHenry, heroHolly], [heroHenry, heroHolly, loneWolfLarry]]
+             [heroHenry, heroHolly], [heroHenry, heroHolly, loneWolfLarry],
+             [
+                 weekOffWally, slackerSam, loneWolfLarry, goodGina, goodGeorge,
+                 heroHolly, heroHenry
+             ]]
 
 scenarios = [pd.DataFrame.from_records(i) for i in scenarios]

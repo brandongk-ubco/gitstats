@@ -7,9 +7,9 @@ class AbsoluteEffortNormalizer:
                  expected_tasks_per_week=2,
                  bonus_slope=0.25,
                  maximum=125.):
-        self.expected_commits = expected_commits_per_week * report_weeks
-        self.expected_changes = expected_changes_per_week * report_weeks
-        self.expected_prs = expected_tasks_per_week * report_weeks * 2
+        self.expected_commits = expected_commits_per_week
+        self.expected_changes = expected_changes_per_week
+        self.expected_prs = expected_tasks_per_week * 2
         self.bonus_slope = bonus_slope
         self.maximum = maximum
 
