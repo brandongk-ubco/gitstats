@@ -181,7 +181,7 @@ class StatsCalculator:
         return counted_issues, excluded_issues
 
     def getExpectedIssuesPerUser(self):
-        return 2 * self.report_weeks
+        return 2
 
     def getTeamScore(self, users, issues):
         expected_issues = self.getExpectedIssuesPerUser() * len(users)
