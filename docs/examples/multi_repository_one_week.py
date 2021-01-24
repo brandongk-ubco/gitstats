@@ -10,7 +10,10 @@ from datetime import datetime
 print("Running with gitstats version: {}".format(gitstats.__version__))
 
 access_token = "21b2a4fb3ca8e7405e8623aefc715f7911485e5e"
-repository = "brandongk-ubco/gitstats"
+repositories = [
+    "brandongk-ubco/gitstats",
+    "brandongk-ubco/segmenter",
+]
 group_name = "gitstats"
 
 excluded_users = ["bohuie"]
@@ -20,7 +23,7 @@ end = datetime.fromisoformat('2020-09-16T10:30')
 
 stats = gitstats.report(access_token,
                         group_name,
-                        repository,
+                        repositories,
                         start=start,
                         end=end,
                         excluded_users=excluded_users)

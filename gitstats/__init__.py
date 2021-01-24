@@ -1,6 +1,7 @@
 from .GithubConnection import GithubConnection
 from .StatsCollector import StatsCollector
 from .GithubAPIRepository import GithubAPIRepository
+from .MultiGithubAPIRepository import MultiGithubAPIRepository
 from .StatsCalculator import StatsCalculator
 from .Reporter import Reporter
 from .Templater import Templater
@@ -9,6 +10,7 @@ from .RelativeEffortNormalizer import RelativeEffortNormalizer
 from .AbsoluteEffortNormalizer import AbsoluteEffortNormalizer
 from .AbsoluteEffortWithBonusNormalizer import AbsoluteEffortWithBonusNormalizer
 from github import Github
+from collections.abc import Iterable
 
 from pkg_resources import get_distribution, DistributionNotFound
 try:
@@ -37,8 +39,18 @@ def report(access_token, group_name, repository, start, end, excluded_users=[]):
     check_for_updates()
     start = TimeConverter.utc_to_pacific(start)
     end = TimeConverter.utc_to_pacific(end)
-    connection = GithubConnection(access_token, repository)
-    repository = GithubAPIRepository(connection.get_repository())
+    if isinstance(repository, str):
+        connection = GithubConnection(access_token, repository)
+        repository = GithubAPIRepository(connection.get_repository())
+    elif isinstance(repository, Iterable):
+        repositories = []
+        for r in repository:
+            connection = GithubConnection(access_token, r)
+            repositories.append(connection.get_repository())
+        repository = MultiGithubAPIRepository(repositories)
+    else:
+        raise TypeError("respository must be either a String or an Iterable.")
+
     report_weeks = getReportWeeks(start, end)
     normalizer = AbsoluteEffortWithBonusNormalizer(report_weeks)
     collector = StatsCollector(repository,
