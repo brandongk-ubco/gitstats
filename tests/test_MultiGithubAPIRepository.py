@@ -34,6 +34,8 @@ class TestGithubAPIRepository:
         end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
+        assert prs["id"][0].startswith("0-")
+        assert prs["id"][1].startswith("1-")
         assert len(prs) == len(expected_prs)
 
     @pytest.mark.findPRsByDateRange
@@ -54,52 +56,69 @@ class TestGithubAPIRepository:
         end = datetime.now()
         start = end - timedelta(days=7)
         prs = finder.findPRsByDateRange(start, end)
+        assert prs["id"][0].startswith("0-")
+        assert prs["id"][1].startswith("0-")
+        assert prs["id"][2].startswith("1-")
+        assert prs["id"][3].startswith("1-")
         assert len(prs) == 4
 
-    # @pytest.mark.findPRsByDateRange
-    # def test_prs_start_at_right_date(self):
-    #     expected_prs = [
-    #         MockPR(),
-    #         MockPR(closed_at=datetime.now() - timedelta(days=10))
-    #     ]
-    #     finder = self._mock_pr_response(expected_prs)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     prs = finder.findPRsByDateRange(start, end)
-    #     assert len(prs) == 1
+    @pytest.mark.findPRsByDateRange
+    def test_prs_start_at_right_date(self):
+        expected_prs = [[
+            MockPR(),
+            MockPR(closed_at=datetime.now() - timedelta(days=10))
+        ], [MockPR(),
+            MockPR(closed_at=datetime.now() - timedelta(days=10))]]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert prs["id"][0].startswith("0-")
+        assert prs["id"][1].startswith("1-")
+        assert len(prs) == 2
 
-    # @pytest.mark.findPRsByDateRange
-    # def test_prs_skip_after_end_date(self):
-    #     expected_prs = [
-    #         MockPR(closed_at=datetime.now() + timedelta(days=1)),
-    #         MockPR()
-    #     ]
-    #     finder = self._mock_pr_response(expected_prs)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     prs = finder.findPRsByDateRange(start, end)
-    #     assert len(prs) == 1
+    @pytest.mark.findPRsByDateRange
+    def test_prs_skip_after_end_date(self):
+        expected_prs = [[
+            MockPR(closed_at=datetime.now() + timedelta(days=1)),
+            MockPR()
+        ], [MockPR(closed_at=datetime.now() + timedelta(days=1)),
+            MockPR()]]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert prs["id"][0].startswith("0-")
+        assert prs["id"][1].startswith("1-")
+        assert len(prs) == 2
 
-    # @pytest.mark.findPRsByDateRange
-    # def test_ignores_one_pr(self):
-    #     expected_prs = [MockPR(labels=[MockLabel("gitstats-ignore")])]
-    #     finder = self._mock_pr_response(expected_prs)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     prs = finder.findPRsByDateRange(start, end)
-    #     assert len(prs) == 0
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr(self):
+        expected_prs = [[MockPR(labels=[MockLabel("gitstats-ignore")])],
+                        [MockPR(labels=[MockLabel("gitstats-ignore")])]]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert len(prs) == 0
 
-    # @pytest.mark.findPRsByDateRange
-    # def test_ignores_one_pr_but_not_both(self):
-    #     expected_prs = [
-    #         MockPR(labels=[MockLabel("gitstats-ignore")]),
-    #         MockPR(MockLabel("do-not-ignore"))
-    #     ]
-    #     finder = self._mock_pr_response(expected_prs)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     prs = finder.findPRsByDateRange(start, end)
-    #     assert len(prs) == 1
+    @pytest.mark.findPRsByDateRange
+    def test_ignores_one_pr_but_not_both(self):
+        expected_prs = [[
+            MockPR(labels=[MockLabel("gitstats-ignore")]),
+            MockPR(MockLabel("do-not-ignore"))
+        ],
+                        [
+                            MockPR(labels=[MockLabel("gitstats-ignore")]),
+                            MockPR(MockLabel("do-not-ignore"))
+                        ]]
+        finder = self._mock_pr_response(expected_prs)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findPRsByDateRange(start, end)
+        assert prs["id"][0].startswith("0-")
+        assert prs["id"][1].startswith("1-")
+        assert len(prs) == 2
 
     # @pytest.mark.getById
     # def test_returns_get_pull_response(self):
