@@ -43,8 +43,8 @@ class MultiGithubAPIRepository:
     def findIssuesByDateRange(self, start, end):
         df = pd.DataFrame(columns=["number", "date", "assignee", "labels"])
         for i, repository in enumerate(self.repositories):
-            repository_df = repository.findIssuesByDateRange(id)
-            repository_df["id"] = repository_df["id"].apply(
+            repository_df = repository.findIssuesByDateRange(start, end)
+            repository_df["number"] = repository_df["number"].apply(
                 lambda id: "{}-{}".format(i, id))
             df = df.append(repository_df, ignore_index=True)
         return df

@@ -194,79 +194,133 @@ class TestGithubAPIRepository:
             expected_date = expected_commits[1][i].date
             assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
-    # @pytest.mark.getCommitsByPullRequestId
-    # def test_ignores_merge_commits(self):
-    #     commit_1 = MockCommit()
-    #     commit_2 = MockCommit()
-    #     merge_commit = MockCommit(parents=[commit_1, commit_2])
-    #     expected_commits = [commit_1, commit_2, merge_commit]
-    #     pr = MockPR(commits=expected_commits)
-    #     finder = self._mock_pr_response([pr])
-    #     commits = finder.getCommitsByPullRequestId(pr.number)
-    #     assert len(commits) == 2
-    #     for i in range(0, len(commits)):
-    #         actual_date = commits["date"][i]
-    #         expected_date = expected_commits[i].date
-    #         assert abs(actual_date - expected_date) < timedelta(seconds=1)
+    @pytest.mark.getCommitsByPullRequestId
+    def test_ignores_merge_commits(self):
+        commit_1 = MockCommit()
+        commit_2 = MockCommit()
+        merge_commit_1 = MockCommit(parents=[commit_1, commit_2])
 
-    # @pytest.mark.getCommentsByPullRequestId
-    # def test_returns_comments(self):
-    #     expected_review_comments = [MockComment(), MockComment()]
-    #     expected_issue_comments = [MockComment(), MockComment()]
-    #     pr = MockPR(issue_comments=expected_issue_comments,
-    #                 review_comments=expected_review_comments)
-    #     finder = self._mock_pr_response([pr])
-    #     comments = finder.getCommentsByPullRequestId(pr.number)
-    #     assert len(comments) == len(expected_review_comments) + len(
-    #         expected_issue_comments)
+        commit_3 = MockCommit()
+        commit_4 = MockCommit()
+        merge_commit_2 = MockCommit(parents=[commit_1, commit_2])
 
-    # @pytest.mark.findIssuesByDateRange
-    # def test_no_issues(self):
-    #     expected_issues = []
-    #     finder = self._mock_issue_response(expected_issues)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     prs = finder.findIssuesByDateRange(start, end)
-    #     assert len(prs) == 0
+        expected_commits_1 = [commit_1, commit_2, merge_commit_1]
+        expected_commits_2 = [commit_3, commit_4, merge_commit_2]
+        prs = [[MockPR(commits=expected_commits_1)],
+               [MockPR(commits=expected_commits_2)]]
+        finder = self._mock_pr_response(prs)
 
-    # @pytest.mark.findIssuesByDateRange
-    # def test_one_issue(self):
-    #     expected_issues = [MockIssue()]
-    #     finder = self._mock_issue_response(expected_issues)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     issues = finder.findIssuesByDateRange(start, end)
-    #     assert len(issues) == len(expected_issues)
+        # Check the first repository
+        commits = finder.getCommitsByPullRequestId("0-{}".format(
+            prs[0][0].number))
+        assert len(commits) == 2
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits_1[i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
-    # @pytest.mark.findIssuesByDateRange
-    # def test_two_issues(self):
-    #     expected_issues = [MockIssue(), MockIssue()]
-    #     finder = self._mock_issue_response(expected_issues)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     issues = finder.findIssuesByDateRange(start, end)
-    #     assert len(issues) == 2
+        # Check the second repository
+        commits = finder.getCommitsByPullRequestId("1-{}".format(
+            prs[1][0].number))
+        assert len(commits) == 2
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits_2[i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
-    # @pytest.mark.findIssuesByDateRange
-    # def test_issues_start_at_right_date(self):
-    #     expected_issues = [
-    #         MockIssue(),
-    #         MockIssue(closed_at=datetime.now() - timedelta(days=10))
-    #     ]
-    #     finder = self._mock_issue_response(expected_issues)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     issues = finder.findIssuesByDateRange(start, end)
-    #     assert len(issues) == 1
+    @pytest.mark.getCommentsByPullRequestId
+    def test_returns_comments(self):
+        expected_review_comments = [[MockComment(),
+                                     MockComment()],
+                                    [MockComment(),
+                                     MockComment()]]
+        expected_issue_comments = [[MockComment(), MockComment()],
+                                   [MockComment(), MockComment()]]
+        prs = [[
+            MockPR(issue_comments=expected_issue_comments[0],
+                   review_comments=expected_review_comments[0])
+        ],
+               [
+                   MockPR(issue_comments=expected_issue_comments[1],
+                          review_comments=expected_review_comments[1])
+               ]]
+        finder = self._mock_pr_response(prs)
+        comments = finder.getCommentsByPullRequestId("0-{}".format(
+            prs[0][0].number))
+        assert len(comments) == len(expected_review_comments[0]) + len(
+            expected_issue_comments[0])
 
-    # @pytest.mark.findIssuesByDateRange
-    # def test_issues_skip_after_end_date(self):
-    #     expected_issues = [
-    #         MockIssue(closed_at=datetime.now() + timedelta(days=1)),
-    #         MockIssue()
-    #     ]
-    #     finder = self._mock_issue_response(expected_issues)
-    #     end = datetime.now()
-    #     start = end - timedelta(days=7)
-    #     issues = finder.findIssuesByDateRange(start, end)
-    #     assert len(issues) == 1
+        comments = finder.getCommentsByPullRequestId("1-{}".format(
+            prs[1][0].number))
+        assert len(comments) == len(expected_review_comments[1]) + len(
+            expected_issue_comments[1])
+
+    @pytest.mark.findIssuesByDateRange
+    def test_no_issues(self):
+        expected_issues = [[], []]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        prs = finder.findIssuesByDateRange(start, end)
+        assert len(prs) == 0
+
+    @pytest.mark.findIssuesByDateRange
+    def test_one_issue(self):
+        expected_issues = [[MockIssue()], [MockIssue()]]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 2
+        assert issues["number"][0].startswith("0-")
+        assert issues["number"][1].startswith("1-")
+
+    @pytest.mark.findIssuesByDateRange
+    def test_two_issues(self):
+        expected_issues = [[MockIssue(), MockIssue()],
+                           [MockIssue(), MockIssue()]]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 4
+        assert issues["number"][0].startswith("0-")
+        assert issues["number"][1].startswith("0-")
+        assert issues["number"][2].startswith("1-")
+        assert issues["number"][3].startswith("1-")
+
+    @pytest.mark.findIssuesByDateRange
+    def test_issues_start_at_right_date(self):
+        expected_issues = [[
+            MockIssue(),
+            MockIssue(closed_at=datetime.now() - timedelta(days=10))
+        ],
+                           [
+                               MockIssue(),
+                               MockIssue(closed_at=datetime.now() -
+                                         timedelta(days=10))
+                           ]]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 2
+        assert issues["number"][0].startswith("0-")
+        assert issues["number"][1].startswith("1-")
+
+    @pytest.mark.findIssuesByDateRange
+    def test_issues_skip_after_end_date(self):
+        expected_issues = [[
+            MockIssue(closed_at=datetime.now() + timedelta(days=1)),
+            MockIssue()
+        ], [
+            MockIssue(closed_at=datetime.now() + timedelta(days=1)),
+            MockIssue()
+        ]]
+        finder = self._mock_issue_response(expected_issues)
+        end = datetime.now()
+        start = end - timedelta(days=7)
+        issues = finder.findIssuesByDateRange(start, end)
+        assert len(issues) == 2
+        assert issues["number"][0].startswith("0-")
+        assert issues["number"][1].startswith("1-")
