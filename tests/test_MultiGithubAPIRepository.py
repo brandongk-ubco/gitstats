@@ -1,4 +1,5 @@
 from gitstats.MultiGithubAPIRepository import MultiGithubAPIRepository
+from gitstats.GithubAPIRepository import GithubAPIRepository
 from datetime import datetime, timedelta
 import pytest
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue, MockLabel
@@ -7,15 +8,27 @@ from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, 
 class TestGithubAPIRepository:
 
     def _mock_pr_response(self, expected_prs=[]):
-        repositories = [MockRepository(e) for e in expected_prs]
-        finder = MultiGithubAPIRepository(repositories)
+        finder = MultiGithubAPIRepository()
+        finder.repositories = [
+            self._mock_single_pr_response(e) for e in expected_prs
+        ]
         return finder
 
     def _mock_issue_response(self, expected_issues=[]):
-        repositories = [
-            MockRepository(issues=expected_issues) for i in expected_issues
+        finder = MultiGithubAPIRepository()
+        finder.repositories = [
+            self._mock_single_issue_response(e) for e in expected_issues
         ]
-        finder = MultiGithubAPIRepository(repositories)
+        return finder
+
+    def _mock_single_pr_response(self, expected_prs=[]):
+        repository = MockRepository(expected_prs)
+        finder = GithubAPIRepository(repository)
+        return finder
+
+    def _mock_single_issue_response(self, expected_issues=[]):
+        repository = MockRepository(issues=expected_issues)
+        finder = GithubAPIRepository(repository)
         return finder
 
     @pytest.mark.findPRsByDateRange
@@ -120,32 +133,66 @@ class TestGithubAPIRepository:
         assert prs["id"][1].startswith("1-")
         assert len(prs) == 2
 
-    # @pytest.mark.getById
-    # def test_returns_get_pull_response(self):
-    #     expected_prs = [MockPR()]
-    #     finder = self._mock_pr_response(expected_prs)
-    #     pr = finder.getById(expected_prs[0].number)
-    #     assert pr == expected_prs[0]
+    @pytest.mark.getById
+    def test_returns_get_pull_response(self):
+        expected_prs = [[MockPR()], [MockPR()]]
+        finder = self._mock_pr_response(expected_prs)
+        assert finder.getById("0-{}".format(
+            expected_prs[0][0].number)) == expected_prs[0][0]
+        assert finder.getById("1-{}".format(
+            expected_prs[1][0].number)) == expected_prs[1][0]
 
-    # @pytest.mark.getReviewsByPullRequestId
-    # def test_returns_reviews(self):
-    #     expected_reviews = [MockReview(), MockReview()]
-    #     pr = MockPR(reviews=expected_reviews)
-    #     finder = self._mock_pr_response([pr])
-    #     reviews = finder.getReviewsByPullRequestId(pr.number)
-    #     assert len(reviews) == len(expected_reviews)
+    @pytest.mark.getReviewsByPullRequestId
+    def test_returns_reviews(self):
+        expected_reviews = [[MockReview(), MockReview()],
+                            [MockReview(), MockReview()]]
+        prs = [[MockPR(reviews=expected_reviews[0])],
+               [MockPR(reviews=expected_reviews[1])]]
+        finder = self._mock_pr_response(prs)
 
-    # @pytest.mark.getCommitsByPullRequestId
-    # def test_returns_commits(self):
-    #     expected_commits = [MockCommit(), MockCommit()]
-    #     pr = MockPR(commits=expected_commits)
-    #     finder = self._mock_pr_response([pr])
-    #     commits = finder.getCommitsByPullRequestId(pr.number)
-    #     assert len(commits) == len(expected_commits)
-    #     for i in range(0, len(commits)):
-    #         actual_date = commits["date"][i]
-    #         expected_date = expected_commits[i].date
-    #         assert abs(actual_date - expected_date) < timedelta(seconds=1)
+        # Check the first repository
+        reviews = finder.getReviewsByPullRequestId("0-{}".format(
+            prs[0][0].number))
+        for pr_id in reviews["pr"]:
+            assert pr_id.startswith("0-")
+        assert len(reviews) == len(expected_reviews[0])
+
+        # Check the second repository
+        reviews = finder.getReviewsByPullRequestId("1-{}".format(
+            prs[1][0].number))
+        for pr_id in reviews["pr"]:
+            assert pr_id.startswith("1-")
+        assert len(reviews) == len(expected_reviews[1])
+
+    @pytest.mark.getCommitsByPullRequestId
+    def test_returns_commits(self):
+        expected_commits = [[MockCommit(), MockCommit()],
+                            [MockCommit(), MockCommit()]]
+        prs = [[MockPR(commits=expected_commits[0])],
+               [MockPR(commits=expected_commits[1])]]
+        finder = self._mock_pr_response(prs)
+
+        # Check the first repository
+        commits = finder.getCommitsByPullRequestId("0-{}".format(
+            prs[0][0].number))
+        for pr_id in commits["pr"]:
+            assert pr_id.startswith("0-")
+        assert len(commits) == len(expected_commits[0])
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits[0][i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
+
+        # Check the second repository
+        commits = finder.getCommitsByPullRequestId("1-{}".format(
+            prs[1][0].number))
+        for pr_id in commits["pr"]:
+            assert pr_id.startswith("1-")
+        assert len(commits) == len(expected_commits[1])
+        for i in range(0, len(commits)):
+            actual_date = commits["date"][i]
+            expected_date = expected_commits[1][i].date
+            assert abs(actual_date - expected_date) < timedelta(seconds=1)
 
     # @pytest.mark.getCommitsByPullRequestId
     # def test_ignores_merge_commits(self):
