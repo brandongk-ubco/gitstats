@@ -44,11 +44,12 @@ def report(access_token,
            excluded_users=[],
            debug=False):
 
-    logger = logging.getLogger(__name__)
-    handler = logging.FileHandler("gitstats.log")
+    logger = None
     if debug:
+        logger = logging.getLogger(__name__)
+        handler = logging.FileHandler("gitstats.log")
         logger.setLevel("DEBUG")
-    logger.addHandler(handler)
+        logger.addHandler(handler)
 
     check_for_updates()
     start = TimeConverter.utc_to_pacific(start)
