@@ -11,6 +11,7 @@ from .AbsoluteEffortNormalizer import AbsoluteEffortNormalizer
 from .AbsoluteEffortWithBonusNormalizer import AbsoluteEffortWithBonusNormalizer
 from github import Github
 from collections.abc import Iterable
+import logging
 
 from pkg_resources import get_distribution, DistributionNotFound
 try:
@@ -35,13 +36,28 @@ def getReportWeeks(start, end):
     return days / 7
 
 
-def report(access_token, group_name, repository, start, end, excluded_users=[]):
+def report(access_token,
+           group_name,
+           repository,
+           start,
+           end,
+           excluded_users=[],
+           debug=False):
+
+    logger = logging.getLogger(__name__)
+    handler = logging.FileHandler("gitstats.log")
+    if debug:
+        logger.setLevel("DEBUG")
+    logger.addHandler(handler)
+
     check_for_updates()
     start = TimeConverter.utc_to_pacific(start)
     end = TimeConverter.utc_to_pacific(end)
+
     if isinstance(repository, str):
         connection = GithubConnection(access_token, repository)
-        repository = GithubAPIRepository(connection.get_repository())
+        repository = GithubAPIRepository(connection.get_repository(),
+                                         logger=logger)
     elif isinstance(repository, Iterable):
         repositories = []
         for r in repository:

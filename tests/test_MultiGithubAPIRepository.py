@@ -5,7 +5,7 @@ import pytest
 from .mocks import MockRepository, MockPR, MockReview, MockCommit, MockComment, MockIssue, MockLabel
 
 
-class TestGithubAPIRepository:
+class TestMultiGithubAPIRepository:
 
     def _mock_pr_response(self, expected_prs=[]):
         finder = MultiGithubAPIRepository()
@@ -79,9 +79,9 @@ class TestGithubAPIRepository:
     def test_prs_start_at_right_date(self):
         expected_prs = [[
             MockPR(),
-            MockPR(closed_at=datetime.now() - timedelta(days=10))
+            MockPR(updated_at=datetime.now() - timedelta(days=10))
         ], [MockPR(),
-            MockPR(closed_at=datetime.now() - timedelta(days=10))]]
+            MockPR(updated_at=datetime.now() - timedelta(days=10))]]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now()
         start = end - timedelta(days=7)
@@ -119,11 +119,11 @@ class TestGithubAPIRepository:
     def test_ignores_one_pr_but_not_both(self):
         expected_prs = [[
             MockPR(labels=[MockLabel("gitstats-ignore")]),
-            MockPR(MockLabel("do-not-ignore"))
+            MockPR(labels=[MockLabel("do-not-ignore")])
         ],
                         [
                             MockPR(labels=[MockLabel("gitstats-ignore")]),
-                            MockPR(MockLabel("do-not-ignore"))
+                            MockPR(labels=[MockLabel("do-not-ignore")])
                         ]]
         finder = self._mock_pr_response(expected_prs)
         end = datetime.now()
@@ -288,25 +288,6 @@ class TestGithubAPIRepository:
         assert issues["number"][1].startswith("0-")
         assert issues["number"][2].startswith("1-")
         assert issues["number"][3].startswith("1-")
-
-    @pytest.mark.findIssuesByDateRange
-    def test_issues_start_at_right_date(self):
-        expected_issues = [[
-            MockIssue(),
-            MockIssue(closed_at=datetime.now() - timedelta(days=10))
-        ],
-                           [
-                               MockIssue(),
-                               MockIssue(closed_at=datetime.now() -
-                                         timedelta(days=10))
-                           ]]
-        finder = self._mock_issue_response(expected_issues)
-        end = datetime.now()
-        start = end - timedelta(days=7)
-        issues = finder.findIssuesByDateRange(start, end)
-        assert len(issues) == 2
-        assert issues["number"][0].startswith("0-")
-        assert issues["number"][1].startswith("1-")
 
     @pytest.mark.findIssuesByDateRange
     def test_issues_skip_after_end_date(self):

@@ -1,4 +1,6 @@
-tmp.py 
+tmp.py
+*.log
+!tests/scenarios/*.log
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
