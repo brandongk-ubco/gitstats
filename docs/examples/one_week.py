@@ -2,14 +2,14 @@
 
 # Install with:
 # pip uninstall -y gitstats
-# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.0.10/gitstats-1.0.10-py3-none-any.whl
+# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.1.0/gitstats-1.1.0-py3-none-any.whl
 
 import gitstats
 from datetime import datetime
 
 print("Running with gitstats version: {}".format(gitstats.__version__))
 
-access_token = "5f3e0e90d9d8309f5e63fef5dfe591674eb4634a"
+access_token = "d39473c336540452c7808e30e0b51ad1c3f8957e"
 repository = "brandongk-ubco/gitstats"
 group_name = "gitstats"
 

@@ -100,6 +100,11 @@ class StatsCalculator:
             'changes': 'sum'
         }).reset_index().rename(columns={'id': 'commits'})
 
+        if commits.empty:
+            commits = pd.DataFrame(columns=[
+                "user", "pr", "commits", "additions", "deletions", "changes"
+            ])
+
         for user in self.getUsers():
             for pr in self.getPRs():
                 if len(commits[(commits["user"] == user) &
@@ -114,6 +119,7 @@ class StatsCalculator:
                             "commits": 0
                         },
                         ignore_index=True)
+
         return commits
 
     def getContributionsByUserAndPR(self):
