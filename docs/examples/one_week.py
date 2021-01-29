@@ -15,8 +15,8 @@ group_name = "gitstats"
 
 excluded_users = ["bohuie"]
 
-start = datetime.fromisoformat('2021-01-28T13:00')
-end = datetime.fromisoformat('2021-01-28T14:00')
+start = datetime.fromisoformat('2020-09-09T10:30')
+end = datetime.fromisoformat('2020-09-16T10:30')
 
 stats = gitstats.report(access_token,
                         group_name,
