@@ -1,0 +1,4 @@
+name: gitstats
+dependencies:
+  - pip:
+    - -r requirements.txt
