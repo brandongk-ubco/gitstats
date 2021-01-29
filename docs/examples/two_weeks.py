@@ -5,7 +5,7 @@ from datetime import datetime
 
 # Install with:
 # pip uninstall -y gitstats
-# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.0.10/gitstats-1.0.10-py3-none-any.whl
+# pip install --no-cache-dir https://github.com/brandongk-ubco/gitstats/releases/download/v1.1.0/gitstats-1.1.0-py3-none-any.whl
 
 print("Running with gitstats version: {}".format(gitstats.__version__))
 
