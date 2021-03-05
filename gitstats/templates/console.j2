@@ -1,6 +1,11 @@
 Group Name: {{ group_name }}
 Period: {{ start }} to {{ end }}
 
+==============================
+Individual Contributions by PR
+==============================
+{{ contributionsByUserAndPR if not contributionsByUserAndPR.empty else "None" }}
+
 ========================
 Individual Contributions
 ========================
